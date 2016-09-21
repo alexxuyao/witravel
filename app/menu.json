@@ -1,0 +1,45 @@
+{
+    "button":[
+        {
+            "type":"view",
+            "name":"结伴同行",
+            "url":"http://{{.}}/weapp/travellist"
+        },
+        {
+            "name":"导游服务",
+            "sub_button":[
+                {
+                    "type":"view",
+                    "name":"翻译/导游",
+                    "url":"http://{{.}}/weapp/touristguide"
+                },
+                {
+                    "type":"view",
+                    "name":"印度药店",
+                    "url":"http://{{.}}/weapp/pharmacy"
+                },
+                {
+                    "type":"view",
+                    "name":"出行装备",
+                    "url":"http://{{.}}/weapp/equipment"
+                }
+            ]
+        },
+        {
+            "name":"出游攻略",
+            "sub_button":[
+                {
+                    "type":"view",
+                    "name":"出游攻略",
+                    "url":"http://{{.}}/weapp/guide"
+                },
+                {
+                    "type":"view",
+                    "name":"关于我们",
+                    "url":"http://{{.}}/weapp/about"
+                }
+            ]
+        }
+    ]
+}
+

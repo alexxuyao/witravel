@@ -1,0 +1,8 @@
+{
+    "wechat": {
+        "appID":"wx09f8f8ee7236d808",
+    	"appsecret":"9a3eaeab60e76aac2c970c712929cbef",
+		"token" : "everyonehealth"
+    },
+	"domainAndSubPath" : "121.40.64.190/wiTravel"
+}
