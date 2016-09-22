@@ -15,7 +15,15 @@ func (app *WebApp) Start() {
 	mtoken := &module.AccessTokenModule{AppId: mconfig.GetConfig().Wechat.AppId, AppSecret: mconfig.GetConfig().Wechat.AppSecret}
 	mcontainer := &module.WebContainer{Token: mtoken, Config: mconfig.GetConfig()}
 
-	wiTravel := iris.Party("/wiTravel")
+	if mconfig.GetConfig().IsDebug {
+		// this will reload the templates on each request, defaults to false
+		iris.Config.IsDevelopment = true
+	}
+
+	// server the static file
+	iris.Static("/static", "./static/", 1)
+
+	wiTravel := iris.Party("/weapp")
 
 	{
 		// add a silly middleware
@@ -34,21 +42,21 @@ func (app *WebApp) Start() {
 
 		})
 
+		wiTravel.Get("/", handler.IndexHandler)
 		wiTravel.Get("/wechat", handler.MiscHandler)
+		wiTravel.Get("/travellist", handler.TravelListHandler)
 
-		wiTravel.Get("/weapp/travellist", handler.TravelListHandler)
+		//		wiTravel.Get("/", func(c *iris.Context) {
+		//			c.Write("from /wiTravel/ or /wiTravel if you pathcorrection on")
+		//		})
 
-		wiTravel.Get("/", func(c *iris.Context) {
-			c.Write("from /wiTravel/ or /wiTravel if you pathcorrection on")
-		})
+		//		wiTravel.Get("/dashboard", func(c *iris.Context) {
+		//			c.Write("/wiTravel/dashboard")
+		//		})
 
-		wiTravel.Get("/dashboard", func(c *iris.Context) {
-			c.Write("/wiTravel/dashboard")
-		})
-
-		wiTravel.Delete("/delete/:userId", func(c *iris.Context) {
-			c.Write("wiTravel/delete/%s", c.Param("userId"))
-		})
+		//		wiTravel.Delete("/delete/:userId", func(c *iris.Context) {
+		//			c.Write("wiTravel/delete/%s", c.Param("userId"))
+		//		})
 	}
 
 	// 管理后台
@@ -71,7 +79,7 @@ func (app *WebApp) Start() {
 
 		})
 
-		admin.Get("/initMenu", handler.InitMenuHandler)
+		admin.Get("/initmenu", handler.InitMenuHandler)
 	}
 
 	iris.Listen(":8090")
