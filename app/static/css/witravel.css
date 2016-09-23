@@ -26,43 +26,246 @@ body {
 
 .wi_grid>p {
 	text-align: center;
-	color:#FFF;
+	color: #FFF;
 }
 
-.wi_panel{
-	margin:0px;
+.wi_grid:before {
+	border: none;
 }
 
-.wi_navbar + .weui_tab_bd {
-  padding-top: 40px;
-  padding-bottom: 0;
+.wi_grid:after {
+	border: none;
 }
 
-.wi_grids{
-	background-color:#ff552e;
-	width:100%;
+.wi_panel {
+	margin: 0px;
 }
 
-.wi_grid_33{
-	width:33%;
+.wi_navbar+.weui_tab_bd {
+	padding-top: 45px;
+	padding-bottom: 0;
 }
-.wi_grid_20{
-	width:20%;
+
+.wi_grids {
+	background-color: #ff552e;
+	width: 100%;
 }
-.wi_grid_14{
-	width:14%;
+
+.wi_grids:before {
+	border: none;
+}
+
+.wi_grid_33 {
+	width: 33%;
+}
+
+.wi_grid_20 {
+	width: 20%;
+}
+
+.wi_grid_14 {
+	width: 14%;
 }
 
 .down_select:after {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: #FFF transparent transparent;
-    border-image: none;
-    border-style: solid;
-    border-width: 5px;
-    content: "";
-    position: absolute;
-    top: 20px;
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	border-color: #FFF transparent transparent;
+	border-image: none;
+	border-style: solid;
+	border-width: 5px;
+	content: "";
+	position: absolute;
+	top: 20px;
+}
+
+.wi_tabbar {
+	background-color: #333;
+}
+
+.wi_tbaritem, .wi_tbaritem .weui_tabbar_label {
+	color: #DDD;
+}
+
+.wi_tbaritem_on, .wi_tbaritem_on .weui_tabbar_label {
+	color: #FFF;
+}
+
+.scroll_list {
+	overflow: hidden;
+}
+
+.pull_tips {
+	min-height: 50px;
+	text-align: center;
+}
+
+.pull_sbar_out {
+	border: 1px solid rgba(255,123,93,.9);
+	width: 100px;
+	margin: auto;
+	position: relative;
+	margin-top: 20px;
+}
+
+.pull_sbar_in {
+	margin: 2px;
+	background-color: rgba(255,123,93,.9);
+	height: 14px;
+	width: 0%;
+}
+
+.pull_sbar_out>p {
+	position: absolute;
+	top: 0px;
+	left: 18px;
+	color:#666;
+	font-size:13px;
+}
+
+.pull_loading {
+	
+}
+
+.pull_status_hide {
+	
+}
+
+.pull_status_pulling {
+	
+}
+
+.pull_status_loading {
+	
+}
+
+.pull_status_hide  .pull_loading {
+	display: none;
+}
+
+.pull_status_hide  .pull_sbar_out {
+	display: none;
+}
+
+.pull_status_pulling .pull_loading {
+	display: none;
+}
+
+.pull_status_loading .pull_sbar_out {
+	display: none;
+}
+
+
+.spinner {
+  margin: auto;
+  margin-bottom:50px;
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+ 
+.container1 > div, .container2 > div, .container3 > div {
+  width: 6px;
+  height: 6px;
+  background-color: #333;
+ 
+  border-radius: 100%;
+  position: absolute;
+  -webkit-animation: bouncedelay 1.2s infinite ease-in-out;
+  animation: bouncedelay 1.2s infinite ease-in-out;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+ 
+.spinner .spinner-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+ 
+.container2 {
+  -webkit-transform: rotateZ(45deg);
+  transform: rotateZ(45deg);
+}
+ 
+.container3 {
+  -webkit-transform: rotateZ(90deg);
+  transform: rotateZ(90deg);
+}
+ 
+.circle1 { top: 0; left: 0; }
+.circle2 { top: 0; right: 0; }
+.circle3 { right: 0; bottom: 0; }
+.circle4 { left: 0; bottom: 0; }
+ 
+.container2 .circle1 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+ 
+.container3 .circle1 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+ 
+.container1 .circle2 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+ 
+.container2 .circle2 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+ 
+.container3 .circle2 {
+  -webkit-animation-delay: -0.7s;
+  animation-delay: -0.7s;
+}
+ 
+.container1 .circle3 {
+  -webkit-animation-delay: -0.6s;
+  animation-delay: -0.6s;
+}
+ 
+.container2 .circle3 {
+  -webkit-animation-delay: -0.5s;
+  animation-delay: -0.5s;
+}
+ 
+.container3 .circle3 {
+  -webkit-animation-delay: -0.4s;
+  animation-delay: -0.4s;
+}
+ 
+.container1 .circle4 {
+  -webkit-animation-delay: -0.3s;
+  animation-delay: -0.3s;
+}
+ 
+.container2 .circle4 {
+  -webkit-animation-delay: -0.2s;
+  animation-delay: -0.2s;
+}
+ 
+.container3 .circle4 {
+  -webkit-animation-delay: -0.1s;
+  animation-delay: -0.1s;
+}
+ 
+@-webkit-keyframes bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0.0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+ 
+@keyframes bouncedelay {
+  0%, 80%, 100% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 40% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
 }

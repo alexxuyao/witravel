@@ -4,31 +4,50 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
 <title>WeUI</title>
+
 <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/0.4.2/weui.css" />
-<link rel="stylesheet" href="{{.Path}}/static/css/witravel.css" />
+<link rel="stylesheet" href="{{.Path}}/static/css/font-awesome.min.css" />
 <script type="text/javascript" src="https://unpkg.com/vue@1.0.26/dist/vue.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/vue-router@0.7.13/dist/vue-router.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/jquery@3.1.0/dist/jquery.min.js"></script>
-<script type="text/javascript" src="{{.Path}}/static/js/witravel.js"></script>
+<script type="text/javascript" src="https://unpkg.com/iscroll@5.2.0/build/iscroll-probe.js"></script>
+
+<link rel="stylesheet" href="{{.Path}}/static/css/witravel.css?v={{.Rand}}" />
+<script type="text/javascript" src="{{.Path}}/static/js/witravel.js?v={{.Rand}}"></script>
 </head>
 <body>
+	<div style="display: none;">
+		<input type="hidden" id="path" value="{{.Path}}" />
+	</div>
 	<div id="app" class="container">
 		<div class="weui_tab">
 			<div class="weui_tab_bd">
 				<router-view></router-view>
 			</div>
-			<div class="weui_tabbar">
-				<a v-link="{ path: '/travellist' }" class="weui_tabbar_item weui_bar_item_on">
+			<div class="weui_tabbar wi_tabbar">
+				<a v-link="{ path: '/travellist' }" class="weui_tabbar_item wi_tbaritem wi_tbaritem_on">
 					<div class="weui_tabbar_icon">
-						<img src="https://weui.io/images/icon_nav_article.png" alt="">
+						<i class="fa fa-plane" style="font-size: 1.8em;"></i>
 					</div>
 					<p class="weui_tabbar_label">结伴同行</p>
 				</a>
-				<a v-link="{ path: '/tourguide' }" class="weui_tabbar_item">
+				<a v-link="{ path: '/tourguide' }" class="weui_tabbar_item wi_tbaritem">
 					<div class="weui_tabbar_icon">
-						<img src="https://weui.io/images/icon_nav_tab.png" alt="">
+						<i class="fa fa-compass" style="font-size: 1.8em; margin-top: -2px;"></i>
 					</div>
 					<p class="weui_tabbar_label">翻译/导游</p>
+				</a>
+				<a v-link="{ path: '/guide' }" class="weui_tabbar_item wi_tbaritem">
+					<div class="weui_tabbar_icon">
+						<i class="fa fa-map-o" style="font-size: 1.5em;"></i>
+					</div>
+					<p class="weui_tabbar_label">攻略</p>
+				</a>
+				<a v-link="{ path: '/me' }" class="weui_tabbar_item wi_tbaritem">
+					<div class="weui_tabbar_icon">
+						<i class="fa fa-user" style="font-size: 1.8em;"></i>
+					</div>
+					<p class="weui_tabbar_label">我</p>
 				</a>
 			</div>
 		</div>
@@ -40,123 +59,66 @@
 			<div class="weui_tab">
 				<div class="weui_navbar wi_navbar">
 					<div class="weui_grids wi_grids">
-						<a href="javascript:;" class="weui_grid wi_grid wi_grid_33">
+						<a href="javascript:;" class="weui_grid wi_grid">
 							<p>
 								<span class="down_select">日期</span>
 							</p>
 						</a>
-						<a href="javascript:;" class="weui_grid wi_grid wi_grid_33">
+						<a href="javascript:;" class="weui_grid wi_grid">
 							<p>
 								<span class="down_select">目的地</span>
 							</p>
 						</a>
-						<a href="javascript:;" class="weui_grid wi_grid wi_grid_20">
+						<a href="javascript:;" v-on:click="say('hello world');" class="weui_grid wi_grid">
 							<p>
-								<i></i> <span>发布</span> 
-							</p>
-						</a>
-						<a href="javascript:;" class="weui_grid wi_grid wi_grid_14">
-							<p>
-								<i>My</i>
+								<i class="fa fa-plus-square-o"></i> <span class="new_travel_btn">发布</span>
 							</p>
 						</a>
 					</div>
 				</div>
-				<div class="weui_tab_bd">
-					<div class="weui_panel weui_panel_access wi_panel">
+				<div class="weui_tab_bd scroll_list">
+					<div class="weui_panel weui_panel_access wi_panel ">
 						<div class="weui_panel_bd">
-							<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
+
+							<a v-for="(index, item) in travellist" v-link="{ path: '/traveldetail/' + item.id }" class="weui_media_box weui_media_appmsg">
 								<div class="weui_media_hd">
 									<img class="weui_media_appmsg_thumb" src="https://weui.io/images/icon_nav_tab.png" alt="">
 								</div>
 								<div class="weui_media_bd">
-									<h4 class="weui_media_title">标题一</h4>
-									<p class="weui_media_desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
+									<h4 class="weui_media_title">[[item.title]]</h4>
+									<p class="weui_media_desc">[[item.description]]</p>
 								</div>
 							</a>
-							<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
-								<div class="weui_media_hd">
-									<img class="weui_media_appmsg_thumb" src="https://weui.io/images/icon_nav_tab.png" alt="">
-								</div>
-								<div class="weui_media_bd">
-									<h4 class="weui_media_title">标题二</h4>
-									<p class="weui_media_desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
-								</div>
-							</a>
-							<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
-								<div class="weui_media_hd">
-									<img class="weui_media_appmsg_thumb" src="https://weui.io/images/icon_nav_tab.png" alt="">
-								</div>
-								<div class="weui_media_bd">
-									<h4 class="weui_media_title">标题一</h4>
-									<p class="weui_media_desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
-								</div>
-							</a>
-							<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
-								<div class="weui_media_hd">
-									<img class="weui_media_appmsg_thumb" src="https://weui.io/images/icon_nav_tab.png" alt="">
-								</div>
-								<div class="weui_media_bd">
-									<h4 class="weui_media_title">标题二</h4>
-									<p class="weui_media_desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
-								</div>
-							</a>
-							<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
-								<div class="weui_media_hd">
-									<img class="weui_media_appmsg_thumb" src="https://weui.io/images/icon_nav_tab.png" alt="">
-								</div>
-								<div class="weui_media_bd">
-									<h4 class="weui_media_title">标题一</h4>
-									<p class="weui_media_desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
-								</div>
-							</a>
-							<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
-								<div class="weui_media_hd">
-									<img class="weui_media_appmsg_thumb" src="https://weui.io/images/icon_nav_tab.png" alt="">
-								</div>
-								<div class="weui_media_bd">
-									<h4 class="weui_media_title">标题二</h4>
-									<p class="weui_media_desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
-								</div>
-							</a>
-							<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
-								<div class="weui_media_hd">
-									<img class="weui_media_appmsg_thumb" src="https://weui.io/images/icon_nav_tab.png" alt="">
-								</div>
-								<div class="weui_media_bd">
-									<h4 class="weui_media_title">标题一</h4>
-									<p class="weui_media_desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
-								</div>
-							</a>
-							<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
-								<div class="weui_media_hd">
-									<img class="weui_media_appmsg_thumb" src="https://weui.io/images/icon_nav_tab.png" alt="">
-								</div>
-								<div class="weui_media_bd">
-									<h4 class="weui_media_title">标题二</h4>
-									<p class="weui_media_desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
-								</div>
-							</a>
-							<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
-								<div class="weui_media_hd">
-									<img class="weui_media_appmsg_thumb" src="https://weui.io/images/icon_nav_tab.png" alt="">
-								</div>
-								<div class="weui_media_bd">
-									<h4 class="weui_media_title">标题一</h4>
-									<p class="weui_media_desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
-								</div>
-							</a>
-							<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
-								<div class="weui_media_hd">
-									<img class="weui_media_appmsg_thumb" src="https://weui.io/images/icon_nav_tab.png" alt="">
-								</div>
-								<div class="weui_media_bd">
-									<h4 class="weui_media_title">标题二</h4>
-									<p class="weui_media_desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
-								</div>
-							</a>
+
 						</div>
-						<a class="weui_panel_ft" href="javascript:void(0);">查看更多</a>
+						<div class="pull_tips pull_up_tips pull_status_hide">
+							<div class="pull_sbar_out">
+								<div class="pull_sbar_in"></div>
+								<p>使劲往上拉</p>
+							</div>
+							<div class="pull_loading">
+								<div class="spinner">
+									<div class="spinner-container container1">
+										<div class="circle1"></div>
+										<div class="circle2"></div>
+										<div class="circle3"></div>
+										<div class="circle4"></div>
+									</div>
+									<div class="spinner-container container2">
+										<div class="circle1"></div>
+										<div class="circle2"></div>
+										<div class="circle3"></div>
+										<div class="circle4"></div>
+									</div>
+									<div class="spinner-container container3">
+										<div class="circle1"></div>
+										<div class="circle2"></div>
+										<div class="circle3"></div>
+										<div class="circle4"></div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -44,7 +44,7 @@ func (app *WebApp) Start() {
 
 		wiTravel.Get("/", handler.IndexHandler)
 		wiTravel.Get("/wechat", handler.MiscHandler)
-		wiTravel.Get("/travellist", handler.TravelListHandler)
+		wiTravel.Post("/travellist", handler.TravelListHandler)
 
 		//		wiTravel.Get("/", func(c *iris.Context) {
 		//			c.Write("from /wiTravel/ or /wiTravel if you pathcorrection on")

@@ -1,8 +1,18 @@
 package handler
 
-import "github.com/kataras/iris"
+import (
+	"math/rand"
+	"time"
+
+	"github.com/kataras/iris"
+)
 
 //
 func IndexHandler(c *iris.Context) {
-	c.MustRender("index.html", struct{ Path string }{Path: ""})
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	c.MustRender("index.html", struct {
+		Path string
+		Rand int
+	}{Path: "", Rand: r.Int()})
 }
