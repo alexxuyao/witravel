@@ -23,44 +23,44 @@ func (app *WebApp) Start() {
 	// server the static file
 	iris.Static("/static", "./static/", 1)
 
+	// 公共的，给微信做回调用的，不用验证权限，但有的要做签名校验
+	pub := iris.Party("/pub")
+
+	{
+		pub.Get("/wechat", handler.MiscHandler)
+	}
+
+	// 用户访问的，要用微信登录的
 	wiTravel := iris.Party("/weapp")
 
 	{
 		// add a silly middleware
 		wiTravel.UseFunc(func(c *iris.Context) {
 
+			webuser := &module.WebUser{Context: c}
+
 			c.Set("container", mcontainer)
+			c.Set("webuser", webuser)
 
 			//your authentication logic here...
 			println("from ", c.PathString())
-			authorized := true
-			if authorized {
-				c.Next()
-			} else {
-				c.Text(401, c.PathString()+" is not authorized for you")
-			}
+			println("host ", c.HostString())
+			println("requestURI ", string(c.RequestURI()))
+			println("QueryString ", string(c.URI().QueryString()))
+			println("String ", string(c.URI().String()))
+			println("FullURI ", string(c.URI().FullURI()))
+
+			module.DoAuthFilter(c)
 
 		})
 
 		wiTravel.Get("/", handler.IndexHandler)
-		wiTravel.Get("/wechat", handler.MiscHandler)
 		wiTravel.Post("/travellist", handler.TravelListHandler)
 
-		//		wiTravel.Get("/", func(c *iris.Context) {
-		//			c.Write("from /wiTravel/ or /wiTravel if you pathcorrection on")
-		//		})
-
-		//		wiTravel.Get("/dashboard", func(c *iris.Context) {
-		//			c.Write("/wiTravel/dashboard")
-		//		})
-
-		//		wiTravel.Delete("/delete/:userId", func(c *iris.Context) {
-		//			c.Write("wiTravel/delete/%s", c.Param("userId"))
-		//		})
 	}
 
-	// 管理后台
-	admin := wiTravel.Party("/manage")
+	// 管理后台，管理员用微信登录的
+	admin := iris.Party("/manage")
 
 	{
 		// add a silly middleware

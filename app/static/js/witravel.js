@@ -27,8 +27,6 @@ $(function() {
                 this.pullUpStatus = 'hide';
                 $('.pull_up_tips').removeClass('pull_status_loading').removeClass('pull_status_pulling').addClass('pull_status_hide');
 
-                // parse data
-
                 this.refresh();
             };
 

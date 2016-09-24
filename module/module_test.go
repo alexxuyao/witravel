@@ -31,3 +31,13 @@ func Test_lock(t *testing.T) {
 	err = tpl.Execute(buf, "alex")
 	fmt.Println(string(buf.Bytes()))
 }
+
+func Test_string(t *testing.T) {
+	m := make(map[string]string)
+	fmt.Println("get the key of alex is,", m["alex"])
+
+	if m["alex"] == "" {
+		fmt.Println("en. it's empty")
+	}
+
+}
