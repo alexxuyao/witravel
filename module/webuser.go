@@ -9,3 +9,7 @@ type WebUser struct {
 func (u *WebUser) IsAuthorized() bool {
 	return false
 }
+
+func (u *WebUser) DoLogin(openId string) {
+
+}

@@ -1,3 +1,16 @@
 <script type="text/javascript">
-window.location = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={{AppId}}&redirect_uri='+encodeURIComponent(window.location.href)+'&response_type=code&scope={{.Scope}}&state={{.State}}#wechat_redirect';
+
+var wechatRedirectType="{{.WechatRedirectType}}";
+var currentHref = window.location.href;
+
+if(currentHref.indecOf('?') >= 0){
+	currentHref = currentHref.replace('?', '?wechat_redirect_type='+wechatRedirectType+'&');
+} else if(currentHref.indecOf('#') >= 0){
+	currentHref = currentHref.replace('#', '?wechat_redirect_type='+wechatRedirectType+'#');
+} else{
+	currentHref += '?wechat_redirect_type='+wechatRedirectType;
+}
+
+currentHref = encodeURIComponent(currentHref);
+window.location = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={{AppId}}&redirect_uri='+currentHref+'&response_type=code&scope={{.Scope}}&state={{.State}}#wechat_redirect';
 </script>

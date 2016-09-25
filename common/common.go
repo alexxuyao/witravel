@@ -18,7 +18,7 @@ func CheckError(err error) {
 
 func PanicWechatError(resp []byte) {
 	wresp := model.WechatResp{}
-	err = json.Unmarshal(resp, &wresp)
+	err := json.Unmarshal(resp, &wresp)
 
 	if nil != err {
 		panic(err)
@@ -27,6 +27,21 @@ func PanicWechatError(resp []byte) {
 	if wresp.ErrCode != 0 {
 		panic(errors.New(wresp.ErrMsg))
 	}
+}
+
+func GetWechatError(resp []byte) error {
+	wresp := model.WechatResp{}
+	err := json.Unmarshal(resp, &wresp)
+
+	if nil != err {
+		return err
+	}
+
+	if wresp.ErrCode != 0 {
+		return errors.New(wresp.ErrMsg)
+	}
+
+	return nil
 }
 
 func DoGet(url string) ([]byte, error) {

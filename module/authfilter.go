@@ -2,9 +2,12 @@ package module
 
 import (
 	"encoding/json"
+	"errors"
+	"log"
 	"strings"
 
 	"github.com/alexxuyao/witravel/common"
+
 	"github.com/kataras/iris"
 )
 
@@ -29,17 +32,19 @@ type WechatUserInfo struct {
 }
 
 type RedirectVo struct {
-	AppId string
-	Scope string
-	State string
+	AppId              string
+	Scope              string
+	State              string
+	WechatRedirectType string // base, userinfo
 }
 
 func DoAuthFilter(c *iris.Context) {
 
 	defer func() {
-		if err := recover(); err != nil {
-			// log the error
-			c.Render("error.html", nil)
+		if rerr := recover(); rerr != nil {
+			err := rerr.(error)
+			log.Println("do auth filter error:", err.Error())
+			c.Render("error.html", struct{ ErrorMsg string }{ErrorMsg: err.Error()})
 		}
 	}()
 
@@ -81,33 +86,24 @@ func DoAuthFilter(c *iris.Context) {
 
 					if rType == "base" {
 						//
-						c.Render("redirect.html", RedirectVo{AppId: config.Wechat.AppId, State: state, Scope: "snsapi_userinfo"})
+						c.Render("redirect.html", RedirectVo{AppId: config.Wechat.AppId, State: state, Scope: "snsapi_userinfo", WechatRedirectType: "userinfo"})
 						return
 					} else if rType == "userinfo" {
 						// 4. 拉取用户信息
-						// https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
-
-						res, err := common.DoGet("https://api.weixin.qq.com/sns/userinfo?access_token=" + sresp.AccessToken + "&openid=" + sresp.OpenId + "&lang=zh_CN")
-
+						wechatuser, err := getWechatUserinfo(sresp.AccessToken, sresp.OpenId)
 						common.CheckError(err)
 
-						restr := string(res)
-						var wechatuser *WeUserInfo
-
-						if strings.Contains(restr, "openid") {
-							wechatuser = &WechatUserInfo{}
-							err = json.Unmarshal(res, wechatuser)
-						} else {
-							common.PanicWechatError(res)
-						}
-
 						// 5. 注册用户
-
+						userRegister(wechatuser)
 					}
 
 				}
 
 				// 6. 用户登录
+				webuser.DoLogin(sresp.OpenId)
+			} else {
+				// 用户没有同意授权
+
 			}
 		}
 	}
@@ -115,8 +111,44 @@ func DoAuthFilter(c *iris.Context) {
 	if webuser.IsAuthorized() {
 		c.Next()
 	} else {
-		c.Render("redirect.html", RedirectVo{AppId: config.Wechat.AppId, State: state, Scope: "snsapi_base"})
+		c.Render("redirect.html", RedirectVo{AppId: config.Wechat.AppId, State: state, Scope: "snsapi_base", WechatRedirectType: "base"})
 	}
+}
+
+func getWechatUserinfo(accessToken, openId string) (*WechatUserInfo, error) {
+	// 拉取用户信息
+	// https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+
+	res, err := common.DoGet("https://api.weixin.qq.com/sns/userinfo?access_token=" + accessToken + "&openid=" + openId + "&lang=zh_CN")
+
+	if err != nil {
+		return nil, err
+	}
+
+	restr := string(res)
+
+	if !strings.Contains(restr, "openid") {
+
+		err = common.GetWechatError(res)
+		if nil != err {
+			return nil, err
+		}
+
+		return nil, errors.New("unknow error:" + restr)
+	}
+
+	wechatuser := &WechatUserInfo{}
+	err = json.Unmarshal(res, wechatuser)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return wechatuser, nil
+}
+
+func userRegister(wechatuser *WechatUserInfo) error {
+	return nil
 }
 
 func isUserRegister(openId string) bool {
