@@ -8,11 +8,37 @@ import (
 
 func init() {
 	// set default database
-	orm.RegisterDataBase("witravel", "mysql", "witraveluser:witravelpasswd123@tcp(localhost:3306)/my_db?charset=utf8", 30)
+	orm.RegisterDataBase("default", "mysql", "witraveluser:witravelpasswd123@tcp(localhost:3306)/db_witravel?charset=utf8", 30)
 
 	// register model
-	orm.RegisterModel(new(model.User))
+	orm.RegisterModelWithPrefix("tb_", new(model.User))
 
 	// create table
 	// orm.RunSyncdb("default", false, true)
+}
+
+func DoTransaction(fun func(ormer orm.Ormer) error) (err error) {
+	o := orm.NewOrm()
+
+	if err = o.Begin(); nil != err {
+		return
+	}
+
+	defer func() {
+		if rerr := recover(); nil != rerr {
+			err = rerr.(error)
+
+			if berr := o.Rollback(); nil != berr {
+				// log the berr
+			}
+		} else {
+			err = o.Commit()
+		}
+	}()
+
+	if ferr := fun(o); nil != ferr {
+		panic(ferr)
+	}
+
+	return
 }

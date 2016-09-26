@@ -19,6 +19,7 @@ $(function() {
 
             var listScroll = new IScroll('#app .scroll_list', {
                 probeType : 2,
+                click : true,
                 mouseWheel : true,
                 momentum : true
             });
@@ -40,6 +41,7 @@ $(function() {
                     type : 'next', // prev
                     lastId : ''
                 }, function(data) {
+
                     for (var i = 0; i < 10; i++) {
                         me.travellist.push({
                             id : 'id-' + i,

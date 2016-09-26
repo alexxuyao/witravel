@@ -1,16 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script type="text/javascript" src="https://unpkg.com/jquery@3.1.0/dist/jquery.min.js"></script>
+
+</head>
+<body>
+<a href="" id="myhref">click me</a>
+
 <script type="text/javascript">
+
+function urlencode(clearString)
+{
+    var output = '';
+    var x = 0;
+
+    clearString = utf16to8(clearString.toString());
+    var regex = /(^[a-zA-Z0-9-_.]*)/;
+
+    while (x < clearString.length)
+    {
+        var match = regex.exec(clearString.substr(x));
+        if (match != null && match.length > 1 && match[1] != '')
+        {
+            output += match[1];
+            x += match[1].length;
+        }
+        else
+        {
+            if (clearString[x] == ' ')
+                output += '+';
+            else
+            {
+                var charCode = clearString.charCodeAt(x);
+                var hexVal = charCode.toString(16);
+                output += '%' + ( hexVal.length < 2 ? '0' : '' ) + hexVal.toUpperCase();
+            }
+            x++;
+        }
+    }
+
+    function utf16to8(str)
+    {
+        var out, i, len, c;
+
+        out = "";
+        len = str.length;
+        for(i = 0; i < len; i++)
+        {
+            c = str.charCodeAt(i);
+            if ((c >= 0x0001) && (c <= 0x007F))
+            {
+                out += str.charAt(i);
+            }
+            else if (c > 0x07FF)
+            {
+                out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+                out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+                out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+            }
+            else
+            {
+                out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+                out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+            }
+        }
+        return out;
+    }
+
+    return output;
+}
 
 var wechatRedirectType="{{.WechatRedirectType}}";
 var currentHref = window.location.href;
 
-if(currentHref.indecOf('?') >= 0){
+currentHref = currentHref.replace('wechat_redirect_type=base', '');
+currentHref = currentHref.replace('wechat_redirect_type=userinfo', '');
+
+if(currentHref.indexOf('?') >= 0){
 	currentHref = currentHref.replace('?', '?wechat_redirect_type='+wechatRedirectType+'&');
-} else if(currentHref.indecOf('#') >= 0){
+} else if(currentHref.indexOf('#') >= 0){
 	currentHref = currentHref.replace('#', '?wechat_redirect_type='+wechatRedirectType+'#');
 } else{
 	currentHref += '?wechat_redirect_type='+wechatRedirectType;
 }
 
-currentHref = encodeURIComponent(currentHref);
-window.location = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={{AppId}}&redirect_uri='+currentHref+'&response_type=code&scope={{.Scope}}&state={{.State}}#wechat_redirect';
+//if(currentHref.indexOf('https') < 0){
+//	currentHref = currentHref.replace('http', 'https');
+//}
+
+currentHref = urlencode(currentHref);
+var goto = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={{.AppId}}&redirect_uri='+currentHref+'&response_type=code&scope={{.Scope}}&state={{.State}}&random=' + Math.random() + '#wechat_redirect';
+window.location.href = goto;
+$('#myhref').attr('href', goto);
+$('#myhref').text(goto);
 </script>
+</body>
+</html>

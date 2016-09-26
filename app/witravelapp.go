@@ -1,6 +1,7 @@
 package main
 
 import (
+	log "github.com/Sirupsen/logrus"
 	"github.com/alexxuyao/witravel/handler"
 	"github.com/alexxuyao/witravel/module"
 	"github.com/kataras/iris"
@@ -10,6 +11,8 @@ type WebApp struct {
 }
 
 func (app *WebApp) Start() {
+
+	log.SetLevel(log.DebugLevel)
 
 	mconfig := &module.ConfigModule{}
 	mtoken := &module.AccessTokenModule{AppId: mconfig.GetConfig().Wechat.AppId, AppSecret: mconfig.GetConfig().Wechat.AppSecret}
@@ -43,12 +46,12 @@ func (app *WebApp) Start() {
 			c.Set("webuser", webuser)
 
 			//your authentication logic here...
-			println("from ", c.PathString())
-			println("host ", c.HostString())
-			println("requestURI ", string(c.RequestURI()))
-			println("QueryString ", string(c.URI().QueryString()))
-			println("String ", string(c.URI().String()))
-			println("FullURI ", string(c.URI().FullURI()))
+			//			log.Debugln("from ", c.PathString())
+			//			log.Debugln("host ", c.HostString())
+			//			log.Debugln("requestURI ", string(c.RequestURI()))
+			//			log.Debugln("QueryString ", string(c.URI().QueryString()))
+			//			log.Debugln("String ", string(c.URI().String()))
+			log.Infoln("FullURI ", string(c.URI().FullURI()))
 
 			module.DoAuthFilter(c)
 
@@ -82,7 +85,7 @@ func (app *WebApp) Start() {
 		admin.Get("/initmenu", handler.InitMenuHandler)
 	}
 
-	iris.Listen(":8090")
+	iris.Listen(":80")
 }
 
 func main() {
