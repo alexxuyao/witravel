@@ -19,18 +19,22 @@ type User struct {
 type Travel struct {
 	Id                 int64  `orm:"auto" ` // 主键
 	Destination        string // 目的地
-	MeetingTime        string // 集合时间
-	MettingPlace       string // 集合地点
+	MeetingTime        string // 集合时间(北京时间)
+	MeetingCountry     string // 集合点国家
+	MeetingProvince    string // 集合点省份
+	MeetingCity        string // 集合点城市
+	MeetingPlace       string // 集合地点详细地址
+	ReturnDate         string // 返程日期
 	Sponsor            int64  // 发起人Id
-	CreateTime         string // 发起时间
+	CreateTime         string // 发起时间(北京时间)
 	ParticipantsNumber int    // 已参加人数
 	Status             int    // 状态
 	Title              string // 标题
 	Description        string // 详细说明
-	SponsorMobile      string // 发起人手机号
+	SponsorMobile      string // 发起人手机号(手机号及微信号必须填写一个,只有参与人能看到手机及微信号)
 	SponsorWechat      string // 发起人微信号
 	Visitors           int    // 浏览人数
-	Budget             string // 预算
+	Budget             int    // 预算(人民币)
 	ImgUrl             string // 头像
 }
 
@@ -81,4 +85,34 @@ type TourGuide struct {
 // 药店
 type Pharmacy struct {
 	Id int64 `orm:"auto" ` // 主键
+}
+
+// 国家
+type Country struct {
+	Id   int64  `orm:"auto" json:"id"` // 主键
+	Name string `json:"name"`          // 名称
+}
+
+// 省份
+type Province struct {
+	Id        int64  `orm:"auto" json:"id"` // 主键
+	CountryId int64  `json:"countryId"`     // 国家id
+	Name      string `json:"name"`          // 名称
+}
+
+// 城市
+type City struct {
+	Id         int64  `orm:"auto" json:"id"` // 主键
+	CountryId  int64  `json:"countryId"`     // 国家id
+	ProvinceId int64  `json:"provinceId"`    // 省份id
+	Name       string `json:"name"`          // 名称
+}
+
+// 区
+type County struct {
+	Id         int64  `orm:"auto" json:"id"` // 主键
+	CountryId  int64  `json:"countryId"`     // 国家id
+	ProvinceId int64  `json:"provinceId"`    // 省份id
+	CityId     int64  `json:"cityId"`        // 城市id
+	Name       string `json:"name"`          // 名称
 }

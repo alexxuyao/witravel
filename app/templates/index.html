@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
 <title>WeUI</title>
 
-<link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/0.4.2/weui.css" />
+<link rel="stylesheet" href="http://res.wx.qq.com/open/libs/weui/1.0.0/weui.css" />
 <link rel="stylesheet" href="{{.Path}}/static/css/font-awesome.min.css" />
 <script type="text/javascript" src="https://unpkg.com/vue@1.0.26/dist/vue.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/vue-router@0.7.13/dist/vue-router.min.js"></script>
@@ -20,34 +20,34 @@
 		<input type="hidden" id="path" value="{{.Path}}" />
 	</div>
 	<div id="app" class="container">
-		<div class="weui_tab">
-			<div class="weui_tab_bd">
+		<div class="weui-tab">
+			<div class="weui-tab_bd height_100">
 				<router-view></router-view>
 			</div>
-			<div class="weui_tabbar wi_tabbar">
-				<a v-link="{ path: '/travellist' }" class="weui_tabbar_item wi_tbaritem wi_tbaritem_on">
-					<div class="weui_tabbar_icon">
-						<i class="fa fa-plane" style="font-size: 1.8em;"></i>
+			<div class="weui-tabbar wi_tabbar" v-if="showTabbar">
+				<a v-link="{ path: '/travellist' }" class="weui-tabbar__item wi_tbaritem wi_tbaritem_on">
+					<div class="weui-tabbar__icon">
+						<i class="fa fa-plane"></i>
 					</div>
-					<p class="weui_tabbar_label">结伴同行</p>
+					<p class="weui-tabbar__label">结伴同行</p>
 				</a>
-				<a v-link="{ path: '/tourguide' }" class="weui_tabbar_item wi_tbaritem">
-					<div class="weui_tabbar_icon">
-						<i class="fa fa-compass" style="font-size: 1.8em; margin-top: -2px;"></i>
+				<a v-link="{ path: '/tourguide' }" class="weui-tabbar__item wi_tbaritem">
+					<div class="weui-tabbar__icon">
+						<i class="fa fa-compass"></i>
 					</div>
-					<p class="weui_tabbar_label">翻译/导游</p>
+					<p class="weui-tabbar__label">翻译/导游</p>
 				</a>
-				<a v-link="{ path: '/guide' }" class="weui_tabbar_item wi_tbaritem">
-					<div class="weui_tabbar_icon">
-						<i class="fa fa-map-o" style="font-size: 1.5em;"></i>
+				<a v-link="{ path: '/guide' }" class="weui-tabbar__item wi_tbaritem">
+					<div class="weui-tabbar__icon">
+						<i class="fa fa-map-o"></i>
 					</div>
-					<p class="weui_tabbar_label">攻略</p>
+					<p class="weui-tabbar__label">攻略</p>
 				</a>
-				<a v-link="{ path: '/me' }" class="weui_tabbar_item wi_tbaritem">
-					<div class="weui_tabbar_icon">
-						<i class="fa fa-user" style="font-size: 1.8em;"></i>
+				<a v-link="{ path: '/me' }" class="weui-tabbar__item wi_tbaritem">
+					<div class="weui-tabbar__icon">
+						<i class="fa fa-user"></i>
 					</div>
-					<p class="weui_tabbar_label">我</p>
+					<p class="weui-tabbar__label">我</p>
 				</a>
 			</div>
 		</div>
@@ -56,37 +56,37 @@
 	<div class="view_hide">
 		<div id="travellist_view">
 
-			<div class="weui_tab">
-				<div class="weui_navbar wi_navbar">
-					<div class="weui_grids wi_grids">
-						<a href="javascript:;" class="weui_grid wi_grid">
+			<div class="weui-tab">
+				<div class="weui-navbar wi_navbar">
+					<div class="weui-grids wi_grids">
+						<a href="javascript:;" class="weui-grid wi_grid">
 							<p>
 								<span class="down_select">日期</span>
 							</p>
 						</a>
-						<a href="javascript:;" class="weui_grid wi_grid">
+						<a href="javascript:;" class="weui-grid wi_grid">
 							<p>
 								<span class="down_select">目的地</span>
 							</p>
 						</a>
-						<a href="javascript:;" v-on:click="say('hello world');" class="weui_grid wi_grid">
+						<a href="#/edittravel/0" class="weui-grid wi_grid">
 							<p>
 								<i class="fa fa-plus-square-o"></i> <span class="new_travel_btn">发布</span>
 							</p>
 						</a>
 					</div>
 				</div>
-				<div class="weui_tab_bd scroll_list">
-					<div class="weui_panel weui_panel_access wi_panel ">
-						<div class="weui_panel_bd">
+				<div class="weui-tab_bd scroll_list height_100">
+					<div class="weui-panel weui-panel_access wi_panel">
+						<div class="weui-panel_bd">
 
-							<a v-for="(index, item) in travellist" v-link="{ path: '/traveldetail/' + item.id }" class="weui_media_box weui_media_appmsg">
-								<div class="weui_media_hd">
-									<img class="weui_media_appmsg_thumb" src="https://weui.io/images/icon_nav_tab.png" alt="">
+							<a v-for="(index, item) in travellist" v-link="{ path: '/traveldetail/' + item.id }" class="weui-media-box weui-media-box_appmsg">
+								<div class="weui-media-box_hd">
+									<img class="weui-media-box_appmsg_thumb" src="https://weui.io/images/icon_nav_tab.png" alt="">
 								</div>
-								<div class="weui_media_bd">
-									<h4 class="weui_media_title">[[item.title]]</h4>
-									<p class="weui_media_desc">[[item.description]]</p>
+								<div class="weui-media-box_bd">
+									<h4 class="weui-media-box_title">[[item.title]]</h4>
+									<p class="weui-media-box_desc">[[item.description]]</p>
 								</div>
 							</a>
 
@@ -119,11 +119,154 @@
 								</div>
 							</div>
 						</div>
+						<div style="height: 100px"></div>
 					</div>
 				</div>
 			</div>
 
 
+
+		</div>
+		<div id="edittravel_view">
+
+			<div class="wi_form_panel height_100">
+				<div class="weui-cells__title">[[title]]</div>
+
+				<div class="weui-cells weui-cells_form">
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd">
+							<label class="weui-label">目的地</label>
+						</div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="text" placeholder="行程的目的地">
+						</div>
+					</div>
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd">
+							<label class="weui-label">集合时间</label>
+						</div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="datetime-local" placeholder="行程的集合时间">
+						</div>
+					</div>
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd">
+							<label class="weui-label">集合城市</label>
+						</div>
+						<div class="weui-cell__bd">
+							<select class="weui-select wi_select_33" v-on:change="onCountryChange">
+								<option v-for="(index, item) in countrys" value="[[item.id]]">[[item.name]]</option>
+							</select>
+							<select class="weui-select wi_select_33" v-on:change="onProvinceChange">
+								<option v-for="(index, item) in provinces" value="[[item.id]]">[[item.name]]</option>					
+							</select>
+							<select class="weui-select wi_select_33">
+								<option v-for="(index, item) in citys" value="[[item.id]]">[[item.name]]</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd">
+							<label class="weui-label">集合地点</label>
+						</div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="text" placeholder="详细的集合地点">
+						</div>
+					</div>
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd">
+							<label class="weui-label">返程日期</label>
+						</div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="date" placeholder="预计的返程日期">
+						</div>
+					</div>
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd">
+							<label class="weui-label">预算</label>
+						</div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="number" placeholder="大概的预算(人民币)">
+						</div>
+					</div>
+
+				</div>
+				<div class="weui-cells__title">发起人联系方式(只有参与人能查看)</div>
+				<div class="weui-cells weui-cells_form">
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd">
+							<label class="weui-label">手机号码</label>
+						</div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="tel" placeholder="发起人的手机号码">
+						</div>
+					</div>
+					
+					<div class="weui-cell">
+						<div class="weui-cell__hd">
+							<label class="weui-label">微信</label>
+						</div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="text" placeholder="发起人的微信">
+						</div>
+					</div>
+				</div>
+
+				<div class="weui-cells__title">详细说明</div>
+				<div class="weui-cells weui-cells_form">
+					<div class="weui-cell">
+						<div class="weui-cell__bd">
+							<textarea class="weui-textarea" placeholder="请输入文本" rows="3"></textarea>
+							<div class="weui-textarea-counter">
+								<span>0</span>/200
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="weui-cells weui-cells_form">
+					<div class="weui-cell weui-cell_vcode">
+						<div class="weui-cell__hd">
+							<label class="weui-label">验证码</label>
+						</div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="number" placeholder="请输入验证码">
+						</div>
+						<div class="weui-cell__ft">
+							<img class="weui-vcode-img" v-on:click="reloadCaptcha" src="{{.Path}}/pub/captcha/[[captchaId]].png">
+						</div>
+					</div>
+				</div>
+
+				<label for="weuiAgree" class="weui-agree"> <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox"> <span class="weui-agree__text">阅读并同意<a href="javascript:void(0);">《相关条款》</a></span>
+				</label>
+
+				<br />
+				<div class="wi_h_pad_10">
+					<div class="weui-flex">
+						<div class="weui-flex__item">
+							<a href="javascript:;" class="weui-btn weui-btn_primary wi_h_two_btn">发布</a>
+						</div>
+						<div class="weui-flex__item">
+							<a v-link="{ path: '/travellist' }" class="weui-btn weui-btn_default wi_h_two_btn">返回</a>
+						</div>
+					</div>
+				</div>
+
+				<br />
+				<br />
+				<div class="weui-footer">
+					<p class="weui-footer__text">Copyright © 2016 友共行</p>
+				</div>
+				<br />
+			</div>
 
 		</div>
 

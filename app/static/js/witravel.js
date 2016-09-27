@@ -124,7 +124,105 @@ $(function() {
         template : '<p>This is tourguide!</p>'
     });
 
-    var app = Vue.extend({});
+    var edittravel = Vue.extend({
+        template : '#edittravel_view',
+        data : function() {
+            return {
+                title : '新建行程',
+                travel : {
+                    id : ''
+                },
+                captchaId : '',
+                countrys : [],
+                provinces : [],
+                citys : []
+            };
+        },
+        methods : {
+            onCountryChange : function(event) {
+                var me = this;
+                var countryId = $(event.target).val();
+                me.provinces = [];
+                me.citys = [];
+                if (countryId) {
+                    $.get(path + '/pub/getprovinces/' + countryId, function(ret) {
+                        if (ret.success) {
+                            me.provinces.push({
+                                id : '',
+                                name : '请选择'
+                            });
+                            for ( var i in ret.data) {
+                                me.provinces.push(ret.data[i]);
+                            }
+                        }
+                    });
+                }
+            },
+
+            onProvinceChange : function(event) {
+                var me = this;
+                var provinceId = $(event.target).val();
+                me.citys = [];
+                if (provinceId) {
+                    $.get(path + '/pub/getcitys/' + provinceId, function(ret) {
+                        if (ret.success) {
+                            me.citys.push({
+                                id : '',
+                                name : '请选择'
+                            });
+                            for ( var i in ret.data) {
+                                me.citys.push(ret.data[i]);
+                            }
+                        }
+                    });
+                }
+            },
+            
+            reloadCaptcha : function(event) {
+                var me = this;
+                
+                $.get(path + '/pub/getcaptchaid', function(ret){
+                    if(ret.success){
+                        me.captchaId = ret.data;
+                    }
+                })
+            }
+        },
+        ready : function() {
+            // 不显示导航条
+            this.$parent.showTabbar = false;
+            var me = this;
+
+            $.get(path + '/pub/getcountrys', function(ret) {
+                if (ret.success) {
+                    me.countrys.push({
+                        id : '',
+                        name : '请选择'
+                    });
+                    for ( var i in ret.data) {
+                        me.countrys.push(ret.data[i]);
+                    }
+                }
+            });
+            
+            $.get(path + '/pub/getcaptchaid', function(ret){
+                if(ret.success){
+                    me.captchaId = ret.data;
+                }
+            })
+        },
+        beforeDestroy : function(){
+            this.$parent.showTabbar = true;
+        }
+    });
+
+    var app = Vue.extend({
+        data : function() {
+            return {
+                showTabbar : true
+            };
+        }
+    });
 
     var router = new VueRouter();
 
@@ -134,6 +232,9 @@ $(function() {
         },
         '/tourguide' : {
             component : tourguide
+        },
+        '/edittravel/:travelId' : {
+            component : edittravel
         },
     });
 

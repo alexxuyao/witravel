@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/alexxuyao/witravel/model"
+	"github.com/kataras/iris"
 )
 
 func CheckError(err error) {
@@ -109,4 +110,20 @@ func WechatPost(url string, data []byte) error {
 	}
 
 	return nil
+}
+
+// ajax response
+type AjaxJsonResp struct {
+	Success bool        `json:"success"`
+	Data    interface{} `json:"data"`
+}
+
+func AjaxRespSuccess(c *iris.Context, data interface{}) {
+	resp := AjaxJsonResp{Success: true, Data: data}
+	c.JSON(0, resp)
+}
+
+func AjaxRespFail(c *iris.Context, data interface{}) {
+	resp := AjaxJsonResp{Success: false, Data: data}
+	c.JSON(0, resp)
 }

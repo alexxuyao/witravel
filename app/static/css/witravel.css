@@ -41,9 +41,8 @@ body {
 	margin: 0px;
 }
 
-.wi_navbar+.weui_tab_bd {
+.wi_navbar+.weui-tab_bd {
 	padding-top: 45px;
-	padding-bottom: 0;
 }
 
 .wi_grids {
@@ -85,11 +84,11 @@ body {
 	background-color: #333;
 }
 
-.wi_tbaritem, .wi_tbaritem .weui_tabbar_label {
+.wi_tbaritem, .wi_tbaritem .weui-tabbar__label , .wi_tbaritem .weui-tabbar__icon > i {
 	color: #DDD;
 }
 
-.wi_tbaritem_on, .wi_tbaritem_on .weui_tabbar_label {
+.wi_tbaritem_on, .wi_tbaritem_on .weui-tabbar__label, .wi_tbaritem_on .weui-tabbar__icon > i {
 	color: #FFF;
 }
 
@@ -268,4 +267,23 @@ body {
     transform: scale(1.0);
     -webkit-transform: scale(1.0);
   }
+}
+
+.height_100{
+	height:100%;
+}
+
+.wi_form_panel{
+	overflow-y:auto;
+}
+
+.wi_h_two_btn{
+	margin:5px;
+}
+
+.wi_h_pad_10{
+	margin:0px 15px;
+}
+.wi_select_33{
+	width : 32%
 }

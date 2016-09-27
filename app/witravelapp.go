@@ -4,6 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/alexxuyao/witravel/handler"
 	"github.com/alexxuyao/witravel/module"
+	"github.com/dchest/captcha"
 	"github.com/kataras/iris"
 )
 
@@ -31,6 +32,11 @@ func (app *WebApp) Start() {
 
 	{
 		pub.Get("/wechat", handler.MiscHandler)
+		pub.Get("/captcha/:captchaId.png", iris.ToHandlerFunc(captcha.Server(100, 50)))
+		pub.Get("/getcaptchaid", handler.CaptchaIdHandler)
+		pub.Get("/getcountrys", handler.CountrysHandler)
+		pub.Get("/getprovinces/:countryId", handler.ProvincesHandler)
+		pub.Get("/getcitys/:provinceId", handler.CitysHandler)
 	}
 
 	// 用户访问的，要用微信登录的
