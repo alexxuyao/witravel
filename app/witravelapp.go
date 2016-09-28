@@ -2,9 +2,9 @@ package main
 
 import (
 	log "github.com/Sirupsen/logrus"
+	"github.com/alexxuyao/captcha"
 	"github.com/alexxuyao/witravel/handler"
 	"github.com/alexxuyao/witravel/module"
-	"github.com/dchest/captcha"
 	"github.com/kataras/iris"
 )
 
@@ -34,6 +34,7 @@ func (app *WebApp) Start() {
 		pub.Get("/wechat", handler.MiscHandler)
 		pub.Get("/captcha/:captchaId.png", iris.ToHandlerFunc(captcha.Server(100, 50)))
 		pub.Get("/getcaptchaid", handler.CaptchaIdHandler)
+		pub.Get("/validatecaptcha/:value/:captchaId", handler.ValidateCaptchaHandler)
 		pub.Get("/getcountrys", handler.CountrysHandler)
 		pub.Get("/getprovinces/:countryId", handler.ProvincesHandler)
 		pub.Get("/getcitys/:provinceId", handler.CitysHandler)
@@ -65,6 +66,8 @@ func (app *WebApp) Start() {
 
 		wiTravel.Get("/", handler.IndexHandler)
 		wiTravel.Post("/travellist", handler.TravelListHandler)
+		wiTravel.Post("/travelvalidate", handler.TravelValidateHandler)
+		wiTravel.Post("/travelsave", handler.SaveTravelHandler)
 
 	}
 

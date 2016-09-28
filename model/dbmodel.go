@@ -1,5 +1,11 @@
 package model
 
+const (
+	TRAVEL_STATUS_COMMIT  int = 0 // 提交，未审核
+	TRAVEL_STATUS_SUCCESS int = 1 // 审核成功
+	TRAVEL_STATUS_FAIL    int = 2 // 审核失败
+)
+
 // 用户
 type User struct {
 	Id         int64 `orm:"auto"` // 用户ID
@@ -17,25 +23,24 @@ type User struct {
 
 // 行程
 type Travel struct {
-	Id                 int64  `orm:"auto" ` // 主键
-	Destination        string // 目的地
-	MeetingTime        string // 集合时间(北京时间)
-	MeetingCountry     string // 集合点国家
-	MeetingProvince    string // 集合点省份
-	MeetingCity        string // 集合点城市
-	MeetingPlace       string // 集合地点详细地址
-	ReturnDate         string // 返程日期
-	Sponsor            int64  // 发起人Id
-	CreateTime         string // 发起时间(北京时间)
-	ParticipantsNumber int    // 已参加人数
-	Status             int    // 状态
-	Title              string // 标题
-	Description        string // 详细说明
-	SponsorMobile      string // 发起人手机号(手机号及微信号必须填写一个,只有参与人能看到手机及微信号)
-	SponsorWechat      string // 发起人微信号
-	Visitors           int    // 浏览人数
-	Budget             int    // 预算(人民币)
-	ImgUrl             string // 头像
+	Id                 int64  `orm:"auto" json:"id" `                              // 主键
+	Destination        string `json:"destination" validate:"strlen=255, nonzero"`  // 目的地
+	MeetingTime        string `json:"meetingTime" validate:"nonzero"`              // 集合时间(北京时间)
+	MeetingCountry     int64  `json:"meetingCountry" validate:"nonzero"`           // 集合点国家
+	MeetingProvince    int64  `json:"meetingProvince" validate:"nonzero"`          // 集合点省份
+	MeetingCity        int64  `json:"meetingCity" validate:"nonzero"`              // 集合点城市
+	MeetingPlace       string `json:"meetingPlace" validate:"strlen=255, nonzero"` // 集合地点详细地址
+	ReturnDate         string `json:"returnDate" validate:"nonzero"`               // 返程日期
+	Sponsor            int64  `json:"sponsor" `                                    // 发起人Id
+	CreateTime         string `json:"createTime" `                                 // 发起时间(北京时间)
+	ParticipantsNumber int    `json:"participantsNumber" `                         // 已参加人数
+	Status             int    `json:"status" `                                     // 状态
+	Description        string `json:"description" validate:"strlen=255"`           // 详细说明
+	SponsorMobile      string `json:"sponsorMobile" validate:"strlen=11"`          // 发起人手机号(手机号及微信号必须填写一个,只有参与人能看到手机及微信号)
+	SponsorWechat      string `json:"sponsorWechat" validate:"strlen=255"`         // 发起人微信号
+	Visitors           int    `json:"visitors" `                                   // 浏览人数
+	Budget             int    `json:"budget" validate:"nonzero"`                   // 预算(人民币)
+	ImgUrl             string `json:"imgUrl" validate:"strlen=512"`                // 头像
 }
 
 // 行程参与者

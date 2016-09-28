@@ -53,3 +53,8 @@ func (u *WebUser) DoLogin(openId string) {
 	}
 
 }
+
+// 取得当前用户
+func (u *WebUser) Get() *model.User {
+	return u.Context.Session().Get("webuser").(*model.User)
+}

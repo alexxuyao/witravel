@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"github.com/alexxuyao/witravel/model"
 	"github.com/kataras/iris"
@@ -126,4 +127,10 @@ func AjaxRespSuccess(c *iris.Context, data interface{}) {
 func AjaxRespFail(c *iris.Context, data interface{}) {
 	resp := AjaxJsonResp{Success: false, Data: data}
 	c.JSON(0, resp)
+}
+
+// 首字母小写
+func LowerFirst(word string) string {
+	bword := []byte(word)
+	return strings.ToLower(string(bword[0:1])) + string(bword[1:])
 }

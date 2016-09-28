@@ -130,15 +130,72 @@ $(function() {
             return {
                 title : '新建行程',
                 travel : {
-                    id : ''
+                    id : {
+                        rule : {},
+                        validate : true,
+                        type : 'integer',
+                        value : 0
+                    },
+                    destination : {
+                        rule : '',
+                        validate : true,
+                        value : ''
+                    },
+                    meetingTime : {
+                        validate : true,
+                        value : ''
+                    },
+                    meetingCountry : {
+                        validate : true,
+                        type : 'integer',
+                        value : ''
+                    },
+                    meetingProvince : {
+                        validate : true,
+                        type : 'integer',
+                        value : ''
+                    },
+                    meetingCity : {
+                        validate : true,
+                        type : 'integer',
+                        value : ''
+                    },
+                    meetingPlace : {
+                        validate : true,
+                        value : ''
+                    },
+                    returnDate : {
+                        validate : true,
+                        value : ''
+                    },
+                    description : {
+                        validate : true,
+                        value : ''
+                    },
+                    sponsorMobile : {
+                        validate : true,
+                        value : ''
+                    },
+                    sponsorWechat : {
+                        validate : true,
+                        value : ''
+                    },
+                    budget : {
+                        validate : true,
+                        type : 'integer',
+                        value : 0
+                    }
                 },
                 captchaId : '',
+                captchaCode : '',
+                captchaCodeValidate : false,
                 countrys : [],
                 provinces : [],
                 citys : []
             };
         },
         methods : {
+            // 加载省份
             onCountryChange : function(event) {
                 var me = this;
                 var countryId = $(event.target).val();
@@ -154,11 +211,14 @@ $(function() {
                             for ( var i in ret.data) {
                                 me.provinces.push(ret.data[i]);
                             }
+                            me.travel.meetingProvince.value = '';
+                            me.travel.meetingCity.value = '';
                         }
                     });
                 }
             },
 
+            // 加载城市
             onProvinceChange : function(event) {
                 var me = this;
                 var provinceId = $(event.target).val();
@@ -173,19 +233,89 @@ $(function() {
                             for ( var i in ret.data) {
                                 me.citys.push(ret.data[i]);
                             }
+                            me.travel.meetingCity.value = '';
                         }
                     });
                 }
             },
-            
-            reloadCaptcha : function(event) {
+
+            // 重新加载验证码
+            reloadCaptcha : function() {
                 var me = this;
-                
-                $.get(path + '/pub/getcaptchaid', function(ret){
-                    if(ret.success){
+
+                $.get(path + '/pub/getcaptchaid', function(ret) {
+                    if (ret.success) {
                         me.captchaId = ret.data;
+                        me.captchaCodeValidate = false;
+                        me.captchaCode = '';
                     }
                 })
+            },
+
+            // 校验验证码
+            validateCaptcha : function(event) {
+                var me = this;
+                if (me.captchaCode.length == 4) {
+                    $.get(path + '/pub/validatecaptcha/' + me.captchaCode + '/' + me.captchaId, function(ret) {
+                        if (ret.success) {
+                            if (!ret.data.result) {
+                                me.captchaId = ret.data.captchaId;
+                                me.captchaCodeValidate = false;
+                                me.captchaCode = '';
+                            } else {
+                                me.captchaCodeValidate = true;
+                            }
+                        }
+                    });
+                }
+            },
+
+            // 发布行程
+            saveData : function() {
+                var me = this;
+
+                // 验证码是否正确
+                if (!me.captchaCodeValidate) {
+                    return;
+                }
+
+                var travel = {};
+                for ( var i in me.travel) {
+                    if (me.travel[i].value != undefined) {
+                        var type = me.travel[i].type;
+                        if (type === 'integer') {
+                            travel[i] = parseInt(me.travel[i].value);
+                        } else if (type === 'float') {
+                            travel[i] = parseFloat(me.travel[i].value);
+                        } else {
+                            travel[i] = me.travel[i].value;
+                        }
+                    }
+                    me.travel[i].validate = true;
+                }
+
+                console.debug(travel);
+
+                $.post(path + '/weapp/travelvalidate', JSON.stringify(travel), function(ret) {
+                    console.debug(ret);
+                    if (ret.success) {
+                        if (ret.data.validate) {
+                            // 通过验证，提交表单
+                            travel['captchaCode'] = me.captchaCode;
+                            travel['captchaId'] = me.captchaId;
+
+                            $.post(path + '/weapp/edittravel', JSON.stringify(travel), function(ret) {
+                                
+                            });
+
+                        } else {
+                            // 不通过验证
+                            for ( var i in ret.data.msg) {
+                                me.travel[i].validate = false;
+                            }
+                        }
+                    }
+                });
             }
         },
         ready : function() {
@@ -204,14 +334,14 @@ $(function() {
                     }
                 }
             });
-            
-            $.get(path + '/pub/getcaptchaid', function(ret){
-                if(ret.success){
+
+            $.get(path + '/pub/getcaptchaid', function(ret) {
+                if (ret.success) {
                     me.captchaId = ret.data;
                 }
             })
         },
-        beforeDestroy : function(){
+        beforeDestroy : function() {
             this.$parent.showTabbar = true;
         }
     });
