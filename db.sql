@@ -134,11 +134,11 @@ CREATE TABLE `tb_travel` (
   `meeting_province` varchar(255) COLLATE utf8_bin NOT NULL,
   `meeting_city` varchar(255) COLLATE utf8_bin NOT NULL,
   `meeting_place` varchar(512) COLLATE utf8_bin NOT NULL,
+  `return_date` date NOT NULL,
   `sponsor` int(11) NOT NULL,
   `create_time` datetime NOT NULL,
   `participants_number` int(11) NOT NULL,
   `status` int(11) NOT NULL,
-  `title` varchar(512) COLLATE utf8_bin NOT NULL,
   `description` varchar(2048) COLLATE utf8_bin NOT NULL,
   `sponsor_mobile` varchar(45) COLLATE utf8_bin NOT NULL,
   `sponsor_wechat` varchar(45) COLLATE utf8_bin NOT NULL,
@@ -201,4 +201,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-09-27 19:21:46
+-- Dump completed on 2016-09-28 19:03:09
