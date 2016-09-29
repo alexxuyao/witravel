@@ -3,6 +3,17 @@ $(function() {
     Vue.config.delimiters = [ '[[', ']]' ];
     var path = $('#path').val();
 
+    Vue.filter('meetingDate', function(value) {
+        var d = value.split(' ')[0].split('-');
+        var now = new Date();
+
+        if (d[0] === now.getFullYear() + '') {
+            return d[1] + '月' + d[2] + '日';
+        }
+
+        return d[0] + '年' + d[1] + '月' + d[2] + '日';
+    })
+
     var travellist = Vue.extend({
         template : $('#travellist_view').html(),
         data : function() {
@@ -11,9 +22,7 @@ $(function() {
             };
         },
         methods : {
-            say : function(aa) {
-                alert(aa);
-            }
+
         },
         ready : function() {
 
@@ -38,22 +47,22 @@ $(function() {
                 $.post(path + '/weapp/travellist', {
                     date : '',
                     destination : '',
-                    type : 'next', // prev
-                    lastId : ''
-                }, function(data) {
+                    meetingTime : obj.meetingTime,
+                    type : obj.type, // prev, next
+                    lastId : obj.lastId
+                }, function(ret) {
 
-                    for (var i = 0; i < 10; i++) {
-                        me.travellist.push({
-                            id : 'id-' + i,
-                            title : 'hello-' + i,
-                            description : '基于源数据将元素或模板块重复数次。指令的值必须使用特定语法 alias (in|of) expression，为当前遍历的元素提供别名：'
+                    if (ret.success) {
+
+                        for ( var i in ret.data) {
+                            me.travellist.push(ret.data[i]);
+                        }
+
+                        me.$nextTick(function() {
+                            listScroll.refresh();
+                            listScroll.loadFinish();
                         });
                     }
-
-                    me.$nextTick(function() {
-                        listScroll.refresh();
-                        listScroll.loadFinish();
-                    });
 
                 });
             }
@@ -68,7 +77,8 @@ $(function() {
 
             listScroll.on('scroll', function() {
 
-                console.log("y is :" + this.y + ",max y is :" + this.maxScrollY);
+                // console.log("y is :" + this.y + ",max y is :" +
+                // this.maxScrollY);
 
                 if (this.y < this.maxScrollY) {
 
@@ -94,7 +104,8 @@ $(function() {
 
             listScroll.on('scrollEnd', function() {
 
-                console.log("scroll end. y is :" + this.y + ",max y is :" + this.maxScrollY);
+                // console.log("scroll end. y is :" + this.y + ",max y is :" +
+                // this.maxScrollY);
 
                 // 不是正在加载，才进行加载
                 if (this.pullUpStatus !== 'loading') {
@@ -106,7 +117,14 @@ $(function() {
                         this.scrollTo(0, this.maxScrollY, 1000, IScroll.utils.ease.elastic);
 
                         // do ajax
-                        loadData();
+                        if (me.travellist.length > 0) {
+                            var lastObj = me.travellist[me.travellist.length - 1]; 
+                            loadData({
+                                type : 'next',
+                                lastId : lastObj['id'],
+                                meetingTime : lastObj['meetingTime']
+                            });
+                        }
                     } else {
                         this.pullUpStatus = 'hide';
                         $('.pull_up_tips').removeClass('pull_status_loading').removeClass('pull_status_pulling').addClass('pull_status_hide');
@@ -116,7 +134,11 @@ $(function() {
                 }
             });
 
-            loadData();
+            loadData({
+                type : 'next',
+                lastId : '9223372036854775807',
+                meetingTime : '2030-01-01 11:11:11'
+            });
         }
     });
 
@@ -304,8 +326,12 @@ $(function() {
                             travel['captchaCode'] = me.captchaCode;
                             travel['captchaId'] = me.captchaId;
 
-                            $.post(path + '/weapp/edittravel', JSON.stringify(travel), function(ret) {
-                                
+                            $.post(path + '/weapp/travelsave', JSON.stringify(travel), function(ret) {
+                                if (ret.success) {
+                                    me.$router.go('/travellist')
+                                } else {
+
+                                }
                             });
 
                         } else {

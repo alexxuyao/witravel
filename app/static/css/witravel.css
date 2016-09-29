@@ -287,3 +287,13 @@ body {
 .wi_select_33{
 	width : 32%
 }
+
+.wi_travel_thumb{
+	width:60px;
+	height:60px;
+}
+.wi_summary{
+	line-height:20px;
+	color:#666;
+	margin-bottom: 3px;
+}

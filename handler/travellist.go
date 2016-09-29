@@ -4,41 +4,47 @@ import (
 	"strconv"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/alexxuyao/witravel/common"
 	"github.com/alexxuyao/witravel/dao"
 	"github.com/alexxuyao/witravel/model"
 	"github.com/astaxie/beego/orm"
 	"github.com/kataras/iris"
 )
 
-// 用于微信提交认证
+// 行程列表
 func TravelListHandler(c *iris.Context) {
 
 	rtype := c.FormValueString("type")
 	date := c.FormValueString("date")
 	destination := c.FormValueString("destination")
+	meetingTime := c.FormValueString("meetingTime")
 	lastId, err := strconv.ParseInt(c.FormValueString("lastId"), 10, 64)
+
+	log.Println("lastId is :", lastId)
 
 	if nil != err {
 		lastId = 0
 	}
 
+	var list []model.Travel
+
 	if "prev" == rtype {
-		PrevTravelList(date, destination, lastId)
+		list = PrevTravelList(date, destination, meetingTime, lastId)
 	} else {
-		NextTravelList(date, destination, lastId)
+		list = NextTravelList(date, destination, meetingTime, lastId)
 	}
 
-	c.JSON(0, struct{}{})
+	common.AjaxRespSuccess(c, list)
 }
 
 // 下一页
-func NextTravelList(date, destination string, lastId int64) []model.Travel {
+func NextTravelList(date, destination, meetingTime string, lastId int64) []model.Travel {
 	var travels []model.Travel
 
 	if err := dao.DoTransaction(func(o orm.Ormer) error {
 
-		sql := "select id from tb_user where id > ? "
-		args := []interface{}{lastId}
+		sql := "select * from tb_travel where id < ? and meeting_time < ?"
+		args := []interface{}{lastId, meetingTime}
 
 		if date != "" {
 			sql += " and date = ?"
@@ -50,7 +56,7 @@ func NextTravelList(date, destination string, lastId int64) []model.Travel {
 			args = append(args, destination)
 		}
 
-		sql += " limit 10"
+		sql += " order by meeting_time desc, id desc limit 10"
 
 		log.Infoln(sql)
 		log.Infoln(args)
@@ -73,7 +79,7 @@ func NextTravelList(date, destination string, lastId int64) []model.Travel {
 }
 
 // 上一页(刷新数据)
-func PrevTravelList(date, destination string, lastId int64) []model.User {
+func PrevTravelList(date, destination, meetingTime string, lastId int64) []model.Travel {
 
 	return nil
 }

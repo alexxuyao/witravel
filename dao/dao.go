@@ -12,6 +12,7 @@ func init() {
 
 	// register model
 	orm.RegisterModelWithPrefix("tb_", new(model.User))
+	orm.RegisterModelWithPrefix("tb_", new(model.Travel))
 
 	// create table
 	// orm.RunSyncdb("default", false, true)

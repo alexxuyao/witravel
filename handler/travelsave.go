@@ -73,17 +73,18 @@ func AddTravel(c *iris.Context, travel model.Travel) {
 
 	// 数据校验失败
 	if !result {
-		common.AjaxRespSuccess(c, ValidateResp{Validate: result, Msg: msgs})
+		common.AjaxRespFail(c, ValidateResp{Validate: result, Msg: msgs})
 		return
 	}
 
 	webuser := c.Get("webuser").(*module.WebUser)
 
-	travel.CreateTime = time.Now().Format("")
-	travel.ParticipantsNumber = 1
+	travel.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 	travel.Sponsor = webuser.Get().Id
-	travel.Status = 1
+	travel.Status = model.TRAVEL_STATUS_SUCCESS
+	travel.ParticipantsNumber = 1
 	travel.Visitors = 0
+	travel.ImgUrl = webuser.Get().HeadImgUrl
 
 	err := dao.DoTransaction(func(o orm.Ormer) error {
 
@@ -97,6 +98,9 @@ func AddTravel(c *iris.Context, travel model.Travel) {
 	})
 
 	if nil != err {
-
+		common.AjaxRespFail(c, err.Error())
+		return
 	}
+
+	common.AjaxRespSuccess(c, nil)
 }

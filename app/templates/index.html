@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-<title>WeUI</title>
+<title>友共行</title>
 
 <link rel="stylesheet" href="http://res.wx.qq.com/open/libs/weui/1.0.0/weui.css" />
 <link rel="stylesheet" href="{{.Path}}/static/css/font-awesome.min.css" />
@@ -81,12 +81,13 @@
 						<div class="weui-panel_bd">
 
 							<a v-for="(index, item) in travellist" v-link="{ path: '/traveldetail/' + item.id }" class="weui-media-box weui-media-box_appmsg">
-								<div class="weui-media-box_hd">
-									<img class="weui-media-box_appmsg_thumb" src="https://weui.io/images/icon_nav_tab.png" alt="">
+								<div class="weui-media__hd">
+									<img class="weui-media__thumb" src="[[item.imgUrl]]" alt="">
 								</div>
-								<div class="weui-media-box_bd">
-									<h4 class="weui-media-box_title">[[item.title]]</h4>
-									<p class="weui-media-box_desc">[[item.description]]</p>
+								<div class="weui-media__bd">
+									<h4 class="weui-media__title">[[item.meetingTime | meetingDate]] [[item.meetingCity]] 出发 &gt; [[item.destination]]</h4>
+									<p class="weui-media__desc wi_summary">预算:[[item.budget]] | 参加人数:[[item.participantsNumber]] | 浏览次数:[[item.visitors]]</p>
+									<p class="weui-media__desc">[[item.description]]</p>
 								</div>
 							</a>
 
@@ -263,7 +264,7 @@
 							<label class="weui-label">验证码</label>
 						</div>
 						<div class="weui-cell__bd">
-							<input class="weui-input" type="number" placeholder="请输入验证码" v-model="captchaCode" v-on:keyup="validateCaptcha" />
+							<input class="weui-input" type="number" placeholder="请输入验证码" v-on:keyup="validateCaptcha" v-model="captchaCode" />
 						</div>
 						<div class="weui-cell__ft">
 							<img class="weui-vcode-img" v-on:click="reloadCaptcha" src="{{.Path}}/pub/captcha/[[captchaId]].png">
