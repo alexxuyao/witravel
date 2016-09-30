@@ -8,17 +8,17 @@ const (
 
 // 用户
 type User struct {
-	Id         int64 `orm:"auto"` // 用户ID
-	OpenId     string
-	Nickname   string
-	Sex        int
-	Province   string
-	City       string
-	Country    string
-	HeadImgUrl string
-	Privilege  string
-	UnionId    string
-	Mobile     string
+	Id         int64  `orm:"auto" json:"id"` // 用户ID
+	OpenId     string `json:"openId"`        // 用户OpenID
+	Nickname   string `json:"nickname"`      // 用户名
+	Sex        int    `json:"sex"`           // 性别
+	Province   string `json:"province"`      // 省份
+	City       string `json:"city"`          // 城市
+	Country    string `json:"country"`       // 国家
+	HeadImgUrl string `json:"headImgUrl"`    // 头像链接
+	Privilege  string `json:"privilege"`     // 权限
+	UnionId    string `json:"unionId"`       // 用户UnionID
+	Mobile     string `json:"mobile"`        // 手机号
 }
 
 // 行程
@@ -45,14 +45,21 @@ type Travel struct {
 
 // 行程参与者
 type TravelParticipants struct {
-	Id           int64  `orm:"auto" ` // 主键
-	TravelId     int64  // 行程ID
-	Participants int64  // 参与人 Id
-	createTime   string // 参与时间
-	Province     string // 参与人所在省份
-	City         string // 参与人所在城市
-	Mobile       string // 手机号
-	Wechat       string // 微信号
+	Id           int64  `orm:"auto" json:"id" ` // 主键
+	TravelId     int64  `json:"travelId"`       // 行程ID
+	Participants int64  `json:"participants"`   // 参与人 Id
+	CreateTime   string `json:"createTime"`     // 参与时间
+	CountryId    int64  `json:"countryId"`      // 国家ID
+	ProvinceId   int64  `json:"provinceId"`     // 参与人所在省份ID
+	CityId       int64  `json:"cityId"`         // 参与人所在城市ID
+	Country      string `json:"country"`        // 国家
+	Province     string `json:"province"`       // 参与人所在省份
+	City         string `json:"city"`           // 参与人所在城市
+	Mobile       string `json:"mobile"`         // 手机号
+	Wechat       string `json:"wechat"`         // 微信号
+	Nickname     string `json:"nickname"`       // 用户名
+	Sex          int    `json:"sex"`            // 性别
+	HeadImgUrl   string `json:"headImgUrl"`     // 头像链接
 }
 
 // 行程浏览记录

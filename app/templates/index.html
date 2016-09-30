@@ -57,7 +57,7 @@
 		<div id="travellist_view">
 
 			<div class="weui-tab">
-				<div class="weui-navbar wi_navbar">
+				<div class="weui-navbar">
 					<div class="weui-grids wi_grids">
 						<a href="javascript:;" class="weui-grid wi_grid">
 							<p>
@@ -86,7 +86,7 @@
 								</div>
 								<div class="weui-media__bd">
 									<h4 class="weui-media__title">[[item.meetingTime | meetingDate]] [[item.meetingCity]] 出发 &gt; [[item.destination]]</h4>
-									<p class="weui-media__desc wi_summary">预算:[[item.budget]] | 参加人数:[[item.participantsNumber]] | 浏览次数:[[item.visitors]]</p>
+									<p class="weui-media__desc wi_summary">预算:[[item.budget]] | 已参加人数:[[item.participantsNumber]] | 浏览次数:[[item.visitors]]</p>
 									<p class="weui-media__desc">[[item.description]]</p>
 								</div>
 							</a>
@@ -130,7 +130,7 @@
 		</div>
 		<div id="edittravel_view">
 
-			<div class="wi_form_panel height_100">
+			<div class="wi_form_panel">
 				<div class="weui-cells__title">[[title]]</div>
 
 				<div class="weui-cells weui-cells_form">
@@ -155,7 +155,7 @@
 						<div class="weui-cell__bd">
 							<input class="weui-input" type="datetime-local" placeholder="行程的集合时间" v-model="travel.meetingTime.value">
 						</div>
-						
+
 						<div class="weui-cell__ft" v-if="!travel.meetingTime.validate">
 							<i class="weui-icon-warn"></i>
 						</div>
@@ -183,7 +183,7 @@
 						<div class="weui-cell__bd">
 							<input class="weui-input" type="text" placeholder="详细的集合地点" v-model="travel.meetingPlace.value">
 						</div>
-						
+
 						<div class="weui-cell__ft" v-if="!travel.meetingPlace.validate">
 							<i class="weui-icon-warn"></i>
 						</div>
@@ -196,7 +196,7 @@
 						<div class="weui-cell__bd">
 							<input class="weui-input" type="date" placeholder="预计的返程日期" v-model="travel.returnDate.value">
 						</div>
-						
+
 						<div class="weui-cell__ft" v-if="!travel.returnDate.validate">
 							<i class="weui-icon-warn"></i>
 						</div>
@@ -209,7 +209,7 @@
 						<div class="weui-cell__bd">
 							<input class="weui-input" type="number" placeholder="大概的预算(人民币)" v-model="travel.budget.value">
 						</div>
-						
+
 						<div class="weui-cell__ft" v-if="!travel.budget.validate">
 							<i class="weui-icon-warn"></i>
 						</div>
@@ -226,7 +226,7 @@
 						<div class="weui-cell__bd">
 							<input class="weui-input" type="tel" placeholder="发起人的手机号码" v-model="travel.sponsorMobile.value">
 						</div>
-						
+
 						<div class="weui-cell__ft" v-if="!travel.sponsorMobile.validate">
 							<i class="weui-icon-warn"></i>
 						</div>
@@ -239,7 +239,7 @@
 						<div class="weui-cell__bd">
 							<input class="weui-input" type="text" placeholder="发起人的微信" v-model="travel.sponsorWechat.value">
 						</div>
-						
+
 						<div class="weui-cell__ft" v-if="!travel.sponsorWechat.validate">
 							<i class="weui-icon-warn"></i>
 						</div>
@@ -264,7 +264,7 @@
 							<label class="weui-label">验证码</label>
 						</div>
 						<div class="weui-cell__bd">
-							<input class="weui-input" type="number" placeholder="请输入验证码" v-on:keyup="validateCaptcha" v-model="captchaCode" />
+							<input class="weui-input" type="number" placeholder="请输入验证码" v-model="captchaCode" />
 						</div>
 						<div class="weui-cell__ft">
 							<img class="weui-vcode-img" v-on:click="reloadCaptcha" src="{{.Path}}/pub/captcha/[[captchaId]].png">
@@ -295,6 +295,95 @@
 				<br />
 			</div>
 
+		</div>
+
+		<div id="traveldetail_view">
+			<div class="weui-tab">
+				<div class="weui-navbar wi_btnbar">
+					<div class="weui-grids wi_grids">
+						<a v-link="{ path: '/travellist' }" class="weui-grid wi_grid">
+							<p>
+								<span class="">返回</span>
+							</p>
+						</a>
+						<a href="javascript:;" class="weui-grid wi_grid">
+							<p>
+								<span class="">收藏</span>
+							</p>
+						</a>
+						<a href="#/edittravel/0" class="weui-grid wi_grid">
+							<p>
+								<span class="">我要参加</span>
+							</p>
+						</a>
+					</div>
+				</div>
+				<div class="weui-tab_bd">
+
+					<div class="weui-panel weui-panel_access">
+						<div class="weui-panel_bd">
+
+							<a href="javascript:" class="weui-media-box weui-media-box_appmsg">
+								<div class="weui-media__hd">
+									<img class="weui-media__thumb" src="[[travel.imgUrl]]" alt="">
+								</div>
+								<div class="weui-media__bd">
+									<h4 class="weui-media__title">[[travel.meetingTime | meetingDate]] [[travel.meetingCity]] 出发 &gt; [[travel.destination]]</h4>
+									<p class="weui-media__desc">&nbsp;</p>
+									<p class="weui-media__desc wi_summary">预算:[[travel.budget]] | 已参加人数:[[travel.participantsNumber]] | 浏览次数:[[travel.visitors]]</p>
+								</div>
+							</a>
+						</div>
+
+					</div>
+
+					<div class="weui-form-preview">
+						<div class="weui-form-preview__bd wi_form_preview_bd">
+							<p>
+								<label class="weui-form-preview__label">目的地</label> <span class="weui-form-preview__value">[[travel.destination | empty]]</span>
+							</p>
+							<p>
+								<label class="weui-form-preview__label">集合时间</label> <span class="weui-form-preview__value">[[travel.meetingTime | empty]]</span>
+							</p>
+							<p>
+								<label class="weui-form-preview__label">集合城市</label> <span class="weui-form-preview__value">[[travel.meetingCountry]] - [[travel.meetingProvince]] - [[travel.meetingCity]]</span>
+							</p>
+							<p>
+								<label class="weui-form-preview__label">集合地点</label> <span class="weui-form-preview__value">[[travel.meetingPlace | empty]]</span>
+							</p>
+							<p>
+								<label class="weui-form-preview__label">返程日期</label> <span class="weui-form-preview__value">[[travel.returnDate | empty]]</span>
+							</p>
+							<p>
+								<label class="weui-form-preview__label">预算</label> <span class="weui-form-preview__value">[[travel.budget | empty]]</span>
+							</p>
+							<p>
+								<label class="weui-form-preview__label">详细说明</label> <span class="weui-form-preview__value">[[travel.description | empty]]</span>
+							</p>
+						</div>
+					</div>
+
+					<div class="wi_contact_box">
+						<div class="weui-flex">
+							<ul class="weui-flex__item wi_flex_3">
+								<li class="profile"><span class="profile-name">徐先生 </span></li>
+								<li class="meta"><span class="meta-phone">136037****9</span> <span class="meta-addr">归属地:许昌</span></li>
+							</ul>
+							<div class="weui-flex__item wi_flex_2">
+								<ul class="weui-flex">
+									<li class="weui-flex__item wi_icon_li"><a href="javascript:;" class="wi_contact_a">
+											<i class="wi_contact_icon fa fa-phone"></i>
+										</a></li>
+									<li class="weui-flex__item wi_icon_li"><a href="javascript:;" class="wi_contact_a">
+											<i class="wi_contact_icon fa fa-wechat"></i>
+										</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
 		</div>
 
 	</div>

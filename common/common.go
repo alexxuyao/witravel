@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"strings"
 
+	log "github.com/Sirupsen/logrus"
+
 	"github.com/alexxuyao/witravel/model"
 	"github.com/kataras/iris"
 )
@@ -127,6 +129,13 @@ func AjaxRespSuccess(c *iris.Context, data interface{}) {
 func AjaxRespFail(c *iris.Context, data interface{}) {
 	resp := AjaxJsonResp{Success: false, Data: data}
 	c.JSON(0, resp)
+}
+
+func ErrorAjaxResp(c *iris.Context) {
+	if err := recover(); err != nil {
+		log.Errorln(err)
+		AjaxRespFail(c, nil)
+	}
 }
 
 // 首字母小写

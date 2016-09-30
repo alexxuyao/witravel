@@ -26,6 +26,7 @@ func (app *WebApp) Start() {
 
 	// server the static file
 	iris.Static("/static", "./static/", 1)
+	iris.Static("/data", "./data/", 1)
 
 	// 公共的，给微信做回调用的，不用验证权限，但有的要做签名校验
 	pub := iris.Party("/pub")
@@ -65,9 +66,11 @@ func (app *WebApp) Start() {
 		})
 
 		wiTravel.Get("/", handler.IndexHandler)
-		wiTravel.Post("/travellist", handler.TravelListHandler)
-		wiTravel.Post("/travelvalidate", handler.TravelValidateHandler)
-		wiTravel.Post("/travelsave", handler.SaveTravelHandler)
+		wiTravel.Post("/travellist", handler.TravelListHandler)                             // 列表
+		wiTravel.Post("/travelvalidate", handler.TravelValidateHandler)                     // 校验
+		wiTravel.Post("/travelsave", handler.SaveTravelHandler)                             // 保存
+		wiTravel.Get("/traveldetail/:travelId", handler.TravelDetailHandler)                // 详情
+		wiTravel.Post("/addtravelviewrecord/:travelId", handler.AddTravelViewRecordHandler) // 添加浏览记录
 
 	}
 

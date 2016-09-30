@@ -80,8 +80,15 @@ func GetProvinces(countryId int64) ([]model.Province, error) {
 
 	err := dao.DoTransaction(func(o orm.Ormer) error {
 
-		sql := "select * from tb_province where country_id = ?"
-		rawSeter := o.Raw(sql, countryId)
+		sql := "select * from tb_province "
+		args := []interface{}{}
+
+		if countryId != 0 {
+			sql += " where country_id = ?"
+			args = append(args, countryId)
+		}
+
+		rawSeter := o.Raw(sql, args...)
 		num, err := rawSeter.QueryRows(&provinces)
 
 		log.Infoln("query sql :", sql, ", return number:", num)
@@ -102,8 +109,15 @@ func GetCitys(provinceId int64) ([]model.City, error) {
 
 	err := dao.DoTransaction(func(o orm.Ormer) error {
 
-		sql := "select * from tb_city where province_id = ?"
-		rawSeter := o.Raw(sql, provinceId)
+		sql := "select * from tb_city "
+		args := []interface{}{}
+
+		if provinceId != 0 {
+			sql += " where province_id = ?"
+			args = append(args, provinceId)
+		}
+
+		rawSeter := o.Raw(sql, args...)
 		num, err := rawSeter.QueryRows(&citys)
 
 		log.Infoln("query sql :", sql, ", return number:", num)

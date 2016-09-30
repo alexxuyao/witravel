@@ -146,7 +146,7 @@ CREATE TABLE `tb_travel` (
   `budget` int(11) NOT NULL,
   `img_url` varchar(512) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,7 +155,44 @@ CREATE TABLE `tb_travel` (
 
 LOCK TABLES `tb_travel` WRITE;
 /*!40000 ALTER TABLE `tb_travel` DISABLE KEYS */;
+INSERT INTO `tb_travel` VALUES (6,'新德里','2016-10-03 14:00:00','1','52993','52994','香港机场','2016-10-06',2,'2016-09-30 11:48:00',1,1,'去新德里买药，需要的一起。本人去过三次，经验丰富','13666219979','',0,7500,'/data/img/1475250480118249857.jpg'),(7,'新德里','2016-10-01 14:30:00','1','15','1262','机场','2016-10-05',2,'2016-09-30 14:21:37',1,1,'大家一起去走走，金华或浙江的伙计一起来吧，我在这里等你们','13510508340','',0,5600,'/data/img/1475259697792359588.jpg'),(8,'新德里','2016-10-01 14:30:00','1','15','1262','机场','2016-10-05',2,'2016-09-30 14:21:37',1,1,'大家一起去走走，金华或浙江的伙计一起来吧，我在这里等你们','13510508340','',0,5600,'/data/img/1475259697792359588.jpg'),(9,'新德里','2016-10-01 14:30:00','1','15','1262','机场','2016-10-05',2,'2016-09-30 14:21:37',1,1,'去新德里买药，需要的一起。本人去过三次，经验丰富','13666219979','',0,5600,'/data/img/1475259697792359588.jpg'),(10,'新德里','2016-10-03 14:00:00','1','52993','52994','香港机场','2016-10-06',2,'2016-09-30 11:48:00',1,1,'去新德里买药，需要的一起。本人去过三次，经验丰富','13666219979','',0,7500,'/data/img/1475250480118249857.jpg'),(11,'新德里','2016-10-03 14:00:00','1','52993','52994','香港机场','2016-10-06',2,'2016-09-30 11:48:00',1,1,'去新德里买药，需要的一起。本人去过三次，经验丰富','13666219979','',0,7500,'/data/img/1475250480118249857.jpg'),(12,'新德里','2016-10-03 14:00:00','1','52993','52994','香港机场','2016-10-06',2,'2016-09-30 11:48:00',1,1,'去新德里买药，需要的一起。本人去过三次，经验丰富','13666219979','',0,7500,'/data/img/1475250480118249857.jpg'),(13,'新德里','2016-10-03 14:00:00','1','52993','52994','香港机场','2016-10-06',2,'2016-09-30 11:48:00',1,1,'去新德里买药，需要的一起。本人去过三次，经验丰富','13666219979','',0,7500,'/data/img/1475250480118249857.jpg');
 /*!40000 ALTER TABLE `tb_travel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tb_travel_participants`
+--
+
+DROP TABLE IF EXISTS `tb_travel_participants`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tb_travel_participants` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `travel_id` int(11) NOT NULL,
+  `participants` int(11) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `country_id` int(11) DEFAULT NULL,
+  `province_id` int(11) DEFAULT NULL,
+  `city_id` int(11) DEFAULT NULL,
+  `country` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `province` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `city` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `mobile` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `wechat` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `nickname` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `sex` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `head_img_url` varchar(512) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_travel_participants`
+--
+
+LOCK TABLES `tb_travel_participants` WRITE;
+/*!40000 ALTER TABLE `tb_travel_participants` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tb_travel_participants` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -201,4 +238,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-09-28 19:03:09
+-- Dump completed on 2016-09-30 18:41:03

@@ -4,6 +4,7 @@
     	"appsecret":"9a3eaeab60e76aac2c970c712929cbef",
 		"token" : "everyonehealth"
     },
+	"imgDir" : "./data/img",
 	"domainAndSubPath" : "121.40.64.190",
 	"isDebug" : true
 }

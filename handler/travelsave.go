@@ -84,9 +84,22 @@ func AddTravel(c *iris.Context, travel model.Travel) {
 	travel.Status = model.TRAVEL_STATUS_SUCCESS
 	travel.ParticipantsNumber = 1
 	travel.Visitors = 0
-	travel.ImgUrl = webuser.Get().HeadImgUrl
 
-	err := dao.DoTransaction(func(o orm.Ormer) error {
+	// 头像处理
+	imgDir := c.Get("container").(*module.WebContainer).Config.ImgDir
+
+	fname, err := common.GetImg(webuser.Get().HeadImgUrl, imgDir)
+	if nil != err {
+		log.Errorln(err)
+		fname = webuser.Get().HeadImgUrl
+	} else {
+		// config中imgDir要以.开头, 如./data/img
+		fname = fname[1:]
+	}
+
+	travel.ImgUrl = fname
+
+	err = dao.DoTransaction(func(o orm.Ormer) error {
 
 		_, err := o.Insert(&travel)
 

@@ -16,6 +16,7 @@ type WechatConfig struct {
 type AppConfig struct {
 	Wechat           WechatConfig `json:"wechat"`
 	DomainAndSubPath string       `json:"domainAndSubPath"`
+	ImgDir           string       `json:"imgDir"`
 	IsDebug          bool         `json:"isDebug"`
 }
 

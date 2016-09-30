@@ -4,6 +4,10 @@ $(function() {
     var path = $('#path').val();
 
     Vue.filter('meetingDate', function(value) {
+        if (!value) {
+            return '';
+        }
+
         var d = value.split(' ')[0].split('-');
         var now = new Date();
 
@@ -12,10 +16,18 @@ $(function() {
         }
 
         return d[0] + '年' + d[1] + '月' + d[2] + '日';
-    })
+    });
+
+    Vue.filter('empty', function(value) {
+        if (!value) {
+            return '--';
+        }
+
+        return value;
+    });
 
     var travellist = Vue.extend({
-        template : $('#travellist_view').html(),
+        template : '#travellist_view',
         data : function() {
             return {
                 travellist : []
@@ -55,6 +67,7 @@ $(function() {
                     if (ret.success) {
 
                         for ( var i in ret.data) {
+                            ret.data[i]['meetingCity'] = me.$parent.citys[ret.data[i]['meetingCity']];
                             me.travellist.push(ret.data[i]);
                         }
 
@@ -118,7 +131,7 @@ $(function() {
 
                         // do ajax
                         if (me.travellist.length > 0) {
-                            var lastObj = me.travellist[me.travellist.length - 1]; 
+                            var lastObj = me.travellist[me.travellist.length - 1];
                             loadData({
                                 type : 'next',
                                 lastId : lastObj['id'],
@@ -275,7 +288,7 @@ $(function() {
             },
 
             // 校验验证码
-            validateCaptcha : function(event) {
+            validateCaptcha : function() {
                 var me = this;
                 if (me.captchaCode.length == 4) {
                     $.get(path + '/pub/validatecaptcha/' + me.captchaCode + '/' + me.captchaId, function(ret) {
@@ -289,6 +302,10 @@ $(function() {
                             }
                         }
                     });
+                } else {
+                    if (me.captchaCodeValidate) {
+                        me.captchaCodeValidate = false;
+                    }
                 }
             },
 
@@ -344,6 +361,11 @@ $(function() {
                 });
             }
         },
+        watch : {
+            'captchaCode' : function(val, oldVal) {
+                this.validateCaptcha();
+            }
+        },
         ready : function() {
             // 不显示导航条
             this.$parent.showTabbar = false;
@@ -372,11 +394,73 @@ $(function() {
         }
     });
 
+    // 行程详情
+    var traveldetail = Vue.extend({
+        template : '#traveldetail_view',
+        data : function() {
+            return {
+                travel : {},
+                participants : []
+            };
+        },
+        methods : {
+
+        },
+        ready : function() {
+            var me = this;
+            this.$parent.showTabbar = false;
+            var travelId = this.$route.params['travelId'];
+
+            $.get(path + '/weapp/traveldetail/' + travelId, function(ret) {
+                if (ret.success) {
+
+                    var travel = ret.data.travel;
+                    travel['meetingCountry'] = me.$parent.countrys[travel['meetingCountry']];
+                    travel['meetingProvince'] = me.$parent.provinces[travel['meetingProvince']];
+                    travel['meetingCity'] = me.$parent.citys[travel['meetingCity']];
+                    me.travel = travel;
+
+                    me.participants = ret.data.participants;
+                }
+            });
+        },
+        beforeDestroy : function() {
+            this.$parent.showTabbar = true;
+        }
+    });
+
+    // 主程序
     var app = Vue.extend({
         data : function() {
             return {
-                showTabbar : true
+                showTabbar : true,
+                citys : {},
+                provinces : {},
+                countrys : {}
             };
+        },
+        methods : {
+            // 加载城市
+            loadCitys : function() {
+                var me = this;
+
+                var loadData = function(url, data) {
+                    $.get(url, function(ret) {
+                        if (ret.success) {
+                            for ( var i in ret.data) {
+                                data[ret.data[i]['id']] = ret.data[i]['name'];
+                            }
+                        }
+                    });
+                }
+
+                loadData(path + '/pub/getcountrys', me.countrys);
+                loadData(path + '/pub/getprovinces/0', me.provinces);
+                loadData(path + '/pub/getcitys/0', me.citys);
+            }
+        },
+        ready : function() {
+            this.loadCitys();
         }
     });
 
@@ -391,6 +475,9 @@ $(function() {
         },
         '/edittravel/:travelId' : {
             component : edittravel
+        },
+        '/traveldetail/:travelId' : {
+            component : traveldetail
         },
     });
 
