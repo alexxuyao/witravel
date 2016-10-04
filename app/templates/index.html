@@ -298,27 +298,64 @@
 		</div>
 
 		<div id="traveldetail_view">
-			<div class="weui-tab">
+			<div class="weui-tab wi_bg">
+
+
+				<!--BEGIN actionSheet-->
+			    <div>
+			        <div class="weui-mask_transparent actionsheet__mask wi_mask" v-if="showCommentForm"></div>
+			        <div class="weui-actionsheet " v-bind:class="{ 'weui-actionsheet_toggle': showCommentForm }">
+			            <div class="weui-cells wi_comment_cells">
+				            <div class="weui-cell">
+				                <div class="weui-cell__bd">
+				                    <textarea class="weui-textarea" placeholder="请填写咨询内容" rows="4"></textarea>
+
+				                </div>
+
+				 				<div class="weui-cell__ft">
+				                    <a class="weui-btn weui-btn_primary" href="javascript:">发表</a>
+				                </div>
+				            </div>
+
+				        </div>
+
+						<div class="weui-actionsheet__action">
+			                <div class="weui-actionsheet__cell" id="actionsheet_cancel">取消</div>
+			            </div>
+
+
+			        </div>
+
+			    </div>
+		        <!--END actionSheet-->
+
+
+
 				<div class="weui-navbar wi_btnbar">
-					<div class="weui-grids wi_grids">
-						<a v-link="{ path: '/travellist' }" class="weui-grid wi_grid">
+					<div class="weui-grids wi_grids wi_grids_border_top">
+						<a v-link="{ path: '/travellist' }" class="weui-grid wi_grid wi_grid_20 wi_grid_fa">
 							<p>
-								<span class="">返回</span>
+								<i class="fa fa-arrow-circle-o-left"></i>
 							</p>
 						</a>
-						<a href="javascript:;" class="weui-grid wi_grid">
+						<a class="weui-grid wi_grid wi_grid_20 wi_grid_fa">
 							<p>
-								<span class="">收藏</span>
+								<i class="fa fa-star-o"></i>
 							</p>
 						</a>
-						<a href="#/edittravel/0" class="weui-grid wi_grid">
+						<a href="javascript:;" class="weui-grid wi_grid wi_grid_30 ">
+							<p>
+								<span class="">我要咨询</span>
+							</p>
+						</a>
+						<a href="#/edittravel/0" class="weui-grid wi_grid wi_grid_30">
 							<p>
 								<span class="">我要参加</span>
 							</p>
 						</a>
 					</div>
 				</div>
-				<div class="weui-tab_bd">
+				<div class="weui-tab_bd height_100 overflow_y">
 
 					<div class="weui-panel weui-panel_access">
 						<div class="weui-panel_bd">
@@ -330,7 +367,7 @@
 								<div class="weui-media__bd">
 									<h4 class="weui-media__title">[[travel.meetingTime | meetingDate]] [[travel.meetingCity]] 出发 &gt; [[travel.destination]]</h4>
 									<p class="weui-media__desc">&nbsp;</p>
-									<p class="weui-media__desc wi_summary">预算:[[travel.budget]] | 已参加人数:[[travel.participantsNumber]] | 浏览次数:[[travel.visitors]]</p>
+									<p class="weui-media__desc wi_summary">预计花费:[[travel.budget]] | 已参加人数:[[travel.participantsNumber]] | 浏览次数:[[travel.visitors]]</p>
 								</div>
 							</a>
 						</div>
@@ -355,10 +392,13 @@
 								<label class="weui-form-preview__label">返程日期</label> <span class="weui-form-preview__value">[[travel.returnDate | empty]]</span>
 							</p>
 							<p>
-								<label class="weui-form-preview__label">预算</label> <span class="weui-form-preview__value">[[travel.budget | empty]]</span>
+								<label class="weui-form-preview__label">预计花费</label> <span class="weui-form-preview__value">[[travel.budget | empty]]</span>
 							</p>
 							<p>
-								<label class="weui-form-preview__label">详细说明</label> <span class="weui-form-preview__value">[[travel.description | empty]]</span>
+								<label class="weui-form-preview__label">说明</label> <span class="weui-form-preview__value">[[travel.description | empty]]</span>
+							</p>
+							<p>
+								<label class="weui-form-preview__label">发布时间</label> <span class="weui-form-preview__value">[[travel.createTime | empty]]</span>
 							</p>
 						</div>
 					</div>
@@ -366,21 +406,104 @@
 					<div class="wi_contact_box">
 						<div class="weui-flex">
 							<ul class="weui-flex__item wi_flex_3">
-								<li class="profile"><span class="profile-name">徐先生 </span></li>
-								<li class="meta"><span class="meta-phone">136037****9</span> <span class="meta-addr">归属地:许昌</span></li>
+								<li class="wi_profile">
+									<i class="fa fa-user"></i>
+									<span>徐先生 </span>
+								</li>
+								<li class="wi_profile">
+									<i class="fa fa-phone"></i>
+									<span>136037****9</span><span class="meta-addr">归属地:许昌</span>
+								</li>
+								<li class="wi_profile">
+									<i class="fa fa-wechat"></i>
+									<span>yangy**8</span>
+								</li>
 							</ul>
-							<div class="weui-flex__item wi_flex_2">
-								<ul class="weui-flex">
-									<li class="weui-flex__item wi_icon_li"><a href="javascript:;" class="wi_contact_a">
+							<div class="weui-flex__item wi_flex_2" style="padding-top:1px;">
+								<ul class="weui-flex wi_icon_ul">
+									<li class="weui-flex__item wi_icon_li">
+										<a href="tel:18666219979" class="wi_contact_a">
 											<i class="wi_contact_icon fa fa-phone"></i>
-										</a></li>
-									<li class="weui-flex__item wi_icon_li"><a href="javascript:;" class="wi_contact_a">
+										</a>
+									</li>
+									<li class="weui-flex__item wi_icon_li">
+										<a href="javascript:;" class="wi_contact_a">
 											<i class="wi_contact_icon fa fa-wechat"></i>
-										</a></li>
+										</a>
+									</li>
 								</ul>
 							</div>
 						</div>
 					</div>
+
+					<div class="weui-panel">
+						<div class="weui-panel__hd">已参与(2人)</div>
+						<div class="weui-panel__bd wi_panel__bd_participants">
+							<div class="weui-grids">
+
+							    <a href="javascript:;" class="weui-grid wi_grid_participants">
+							        <div class="weui-grid__icon">
+							            <img src="[[travel.imgUrl]]" alt="">
+							        </div>
+							    </a>
+							    <a href="javascript:;" class="weui-grid wi_grid_participants">
+							        <div class="weui-grid__icon">
+							            <img src="[[travel.imgUrl]]" alt="">
+							        </div>
+							    </a>
+
+							</div>
+			            </div>
+					</div>
+
+					<div class="weui-panel">
+						<div class="weui-panel__hd">咨询留言</div>
+						<div class="weui-panel__bd">
+
+							<div class="weui-media-box weui-media-box_appmsg">
+
+								<div class="weui-media__bd">
+									<h4 class="weui-media__title wi_comment_title">Nickname</h4>
+									<p class="weui-media__desc wi_comment">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
+									<ul class="weui-media__info wi_comment_info">
+				                        <li class="weui-media__info__meta">2016-05-16 15:15:15</li>
+				                        <li class="weui-media__info__meta weui-media__info__meta_extra">其它信息</li>
+				                        <li class="weui-media__info__meta wi_comment_right">回复</li>
+				                    </ul>
+								</div>
+							</div>
+
+							<div class="weui-media-box weui-media-box_appmsg">
+
+								<div class="weui-media__bd">
+									<h4 class="weui-media__title wi_comment_title">Nickname</h4>
+									<p class="weui-media__desc wi_comment">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
+									<ul class="weui-media__info wi_comment_info">
+				                        <li class="weui-media__info__meta">2016-05-16 15:15:15</li>
+				                        <li class="weui-media__info__meta weui-media__info__meta_extra">其它信息</li>
+				                        <li class="weui-media__info__meta wi_comment_right">回复</li>
+				                    </ul>
+								</div>
+							</div>
+
+							<div class="weui-media-box weui-media-box_appmsg">
+
+								<div class="weui-media__bd">
+									<h4 class="weui-media__title wi_comment_title">Nickname</h4>
+									<p class="weui-media__desc wi_comment">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
+									<ul class="weui-media__info wi_comment_info">
+				                        <li class="weui-media__info__meta">2016-05-16 15:15:15</li>
+				                        <li class="weui-media__info__meta weui-media__info__meta_extra">其它信息</li>
+				                        <li class="weui-media__info__meta wi_comment_right">回复</li>
+				                    </ul>
+								</div>
+							</div>
+
+			            </div>
+
+					</div>
+
+					<div style="height:45px;"></div>
 
 				</div>
 			</div>
